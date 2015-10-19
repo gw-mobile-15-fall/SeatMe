@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">SeatMe</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="welcome">Welcom to SeatMe!</string>
+    <string name="username">username</string>
+    <string name="pass_word">password</string>
+</resources>
