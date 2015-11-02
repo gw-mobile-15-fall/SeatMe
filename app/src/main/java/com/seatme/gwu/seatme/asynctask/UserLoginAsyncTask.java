@@ -23,7 +23,8 @@ public class UserLoginAsyncTask extends AsyncTask<String, Integer, User> {
     }
 
     public UserLoginAsyncTask(Context context, UserLoginCompletionListener completionListener) {
-        mContext = context;
+        User user = new User();
+        mUser = user;
         mCompletionListener = completionListener;
     }
 
@@ -35,19 +36,18 @@ public class UserLoginAsyncTask extends AsyncTask<String, Integer, User> {
         try {
             // Simulate network access.
 
-            User user = new User();
-            mUser = user;
+            System.out.println(query[0]+" "+ query[1]);
 
             ParseUser.logInInBackground(query[0], query[1], new LogInCallback() {
                 public void done(ParseUser user, ParseException e) {
                     if (user != null) {
-                        attempt(user,null);
+                        attempt(user, null);
                     } else {
-                        attempt(user,e.toString());
+                        System.out.println(e.toString());
+                        attempt(user, e.toString());
                     }
                 }
             });
-
 
             Thread.sleep(2000);
         } catch (InterruptedException e) {
@@ -64,10 +64,10 @@ public class UserLoginAsyncTask extends AsyncTask<String, Integer, User> {
         super.onPostExecute(user);
 
         if (mCompletionListener != null) {
-            if (user == null) {
+            if (mUser.getErrMessage() == null) {
                 mCompletionListener.UserLoginSuccess(user);
             } else {
-                mCompletionListener.UserLoginNotSuccess("err");
+                mCompletionListener.UserLoginNotSuccess(mUser.getErrMessage());
             }
         }
 
@@ -77,9 +77,10 @@ public class UserLoginAsyncTask extends AsyncTask<String, Integer, User> {
 
         if (e == null) {
             mUser.setUsername(user.getUsername());
+            mUser.setEmail(user.getEmail());
             mUser.setObjectId(user.getObjectId());
-        } else if(user!=null){
-
+        } else if(user==null){
+            mUser.setErrMessage(e.toString());
         }
 
     }
