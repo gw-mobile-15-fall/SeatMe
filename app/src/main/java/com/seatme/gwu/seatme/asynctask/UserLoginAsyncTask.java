@@ -51,7 +51,7 @@ public class UserLoginAsyncTask extends AsyncTask<String, Integer, User> {
 
             Thread.sleep(2000);
         } catch (InterruptedException e) {
-            mUser.setErrMessage(e.toString());
+            //mUser.setErrMessage(e.toString());
             System.out.println(e.toString());
         }
 
@@ -64,10 +64,10 @@ public class UserLoginAsyncTask extends AsyncTask<String, Integer, User> {
         super.onPostExecute(user);
 
         if (mCompletionListener != null) {
-            if (user.getErrMessage() == null) {
+            if (user == null) {
                 mCompletionListener.UserLoginSuccess(user);
             } else {
-                mCompletionListener.UserLoginNotSuccess(user.getErrMessage());
+                mCompletionListener.UserLoginNotSuccess("err");
             }
         }
 
@@ -79,7 +79,7 @@ public class UserLoginAsyncTask extends AsyncTask<String, Integer, User> {
             mUser.setUsername(user.getUsername());
             mUser.setObjectId(user.getObjectId());
         } else if(user!=null){
-            mUser.setErrMessage(e);
+
         }
 
     }
