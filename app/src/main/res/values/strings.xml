@@ -6,4 +6,6 @@
     <string name="welcome">Welcom to SeatMe!</string>
     <string name="username">username</string>
     <string name="pass_word">password</string>
+    <string name="find_seat">Find Seat</string>
+    <string name="share_seat">Share Seat</string>
 </resources>

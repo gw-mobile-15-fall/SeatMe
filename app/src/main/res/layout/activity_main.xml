@@ -30,4 +30,5 @@
         android:hint="@string/pass_word"
         android:password="false"/>
 
+
 </LinearLayout>
