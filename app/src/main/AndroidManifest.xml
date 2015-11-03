@@ -27,6 +27,11 @@
             android:name=".activity.SignupActivity"
             android:label="@string/title_activity_signup" >
         </activity>
+        <activity
+            android:name=".activity.SelectService"
+            android:label="@string/title_activity_select_service" >
+        </activity>
+
     </application>
 
 </manifest>

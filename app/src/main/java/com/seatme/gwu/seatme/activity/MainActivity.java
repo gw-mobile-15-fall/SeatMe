@@ -134,6 +134,8 @@ public class MainActivity extends AppCompatActivity implements UserLoginAsyncTas
     public void UserLoginSuccess(User user) {
 
         System.out.println(user.getUsername());
+        Intent intent = new Intent(getBaseContext(), SelectService.class);
+        startActivity(intent);
 
     }
 

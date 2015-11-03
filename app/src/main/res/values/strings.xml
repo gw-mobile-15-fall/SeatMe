@@ -10,6 +10,8 @@
     <string name="share_seat">Share Seat</string>
     <string name="title_activity_signup">Sign in</string>
 
+    <string name="title_activity_select_service">Select</string>
+
     <!-- Strings related to signup -->
 
     <string name="login">Login</string>
