@@ -31,11 +31,9 @@
             android:name=".activity.SelectService"
             android:label="@string/title_activity_select_service" >
         </activity>
-
-
-
-
-
+        <activity android:name=".activity.PushInformationActivity"
+            android:label="@string/title_activity_push_information" >
+        </activity>
     </application>
 
 </manifest>

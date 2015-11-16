@@ -45,6 +45,8 @@ public class SignupActivity extends AppCompatActivity implements LoaderCallbacks
     /**
      * Id to identity READ_CONTACTS permission request.
      */
+    private final String TAG = "SignupActivity";
+
     private static final int REQUEST_READ_CONTACTS = 0;
 
 

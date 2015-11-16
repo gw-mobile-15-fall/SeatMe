@@ -8,9 +8,11 @@
     <string name="pass_word">password</string>
     <string name="find_seat">Find Seat</string>
     <string name="share_seat">Share Seat</string>
-    <string name="title_activity_signup">Sign up</string>
 
+    <string name="title_activity_signup">Sign up</string>
+    <string name="title_activity_login">Login</string>
     <string name="title_activity_select_service">Select</string>
+    <string name="title_activity_push_information">Push Information</string>
 
     <!-- Strings related to signup -->
 
@@ -32,7 +34,15 @@
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
-    <string name="title_activity_login">Login</string>
+
     <string name="action_sign_in">Sign in or register</string>
     <string name="action_sign_in_short">Sign in</string>
+
+    <string name="action_submit">submit</string>
+
+
+    <string name="prompt_fullness">fullness</string>
+    <string name="prompt_seatnumber">number of seat</string>
+
+
 </resources>

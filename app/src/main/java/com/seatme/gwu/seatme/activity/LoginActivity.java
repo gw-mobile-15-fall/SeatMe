@@ -43,7 +43,7 @@ import static android.Manifest.permission.READ_CONTACTS;
  */
 public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<Cursor> {
 
-    private final String TAG = "Loginctivity";
+    private final String TAG = "LoginActivity";
     /**
      * Id to identity READ_CONTACTS permission request.
      */
@@ -209,6 +209,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                         // Hooray! The user is logged in.
                         System.out.println(user.getUsername()+" login successfully");
 
+                        Intent intent = new Intent(getBaseContext(), PushInformationActivity.class);
+                        startActivity(intent);
 
                     } else {
 
