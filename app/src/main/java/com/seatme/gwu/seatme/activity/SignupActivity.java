@@ -31,7 +31,7 @@ import com.parse.ParseException;
 import com.parse.ParseUser;
 import com.parse.SignUpCallback;
 import com.seatme.gwu.seatme.R;
-import com.seatme.gwu.seatme.Util;
+import com.seatme.gwu.seatme.util.Util;
 
 import java.util.ArrayList;
 import java.util.List;

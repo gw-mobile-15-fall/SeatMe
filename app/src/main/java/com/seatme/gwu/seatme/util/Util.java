@@ -1,4 +1,4 @@
-package com.seatme.gwu.seatme;
+package com.seatme.gwu.seatme.util;
 
 /**
  * Created by Huanzhou on 2015/11/2.
