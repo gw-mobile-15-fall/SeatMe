@@ -25,7 +25,7 @@ public class SelectService extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        setContentView(R.layout.select_service);
         mSearchSeat = (Button) findViewById(R.id.search);
         mPlaceSeat = (Button) findViewById(R.id.place);
         mHome = (ImageButton) findViewById(R.id.home);
