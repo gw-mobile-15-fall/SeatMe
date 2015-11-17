@@ -58,7 +58,6 @@ public class PushInformationActivity extends AppCompatActivity {
             return;
         }
 
-
         Firebase myFirebaseRef = new Firebase("https://seatmegwu.firebaseio.com/").child("library");
 
         Map<String, String> post = new HashMap<String, String>();
