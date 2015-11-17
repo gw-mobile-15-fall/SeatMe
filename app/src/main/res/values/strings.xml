@@ -43,6 +43,7 @@
 
     <string name="prompt_fullness">fullness</string>
     <string name="prompt_seatnumber">number of seat</string>
+    <string name="title_activity_search_maps">Map</string>
 
 
 </resources>
