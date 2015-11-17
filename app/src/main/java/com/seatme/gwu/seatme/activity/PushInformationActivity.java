@@ -1,5 +1,6 @@
 package com.seatme.gwu.seatme.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
@@ -39,10 +40,10 @@ public class PushInformationActivity extends AppCompatActivity {
             public void onClick(View view) {
                 System.out.println("push data");
                 attemptPushData();
+                Intent intent = new Intent(getBaseContext(), SelectService.class);
+                startActivity(intent);
             }
         });
-
-
     }
 
     private void attemptPushData() {

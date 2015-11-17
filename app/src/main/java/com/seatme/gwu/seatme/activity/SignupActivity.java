@@ -5,6 +5,7 @@ import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.app.LoaderManager.LoaderCallbacks;
 import android.content.CursorLoader;
+import android.content.Intent;
 import android.content.Loader;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -199,6 +200,8 @@ public class SignupActivity extends AppCompatActivity implements LoaderCallbacks
                         // Hooray! Let them use the app now.
                         System.out.println("success");
                         Toast.makeText(getApplicationContext(), R.string.sign_up_success, Toast.LENGTH_LONG).show();
+                        Intent intent = new Intent(getBaseContext(), SelectService.class);
+                        startActivity(intent);
 
                     } else {
                         // Sign up didn't succeed. Look at the ParseException
