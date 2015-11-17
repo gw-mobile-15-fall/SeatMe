@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="where to go"/>
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center">
+        <Button
+            android:id="@+id/seh"
+            android:text="SEH"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <Button
+            android:id="@+id/rome"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="rome Hall"
+            android:layout_toRightOf="@id/seh"
+            android:layout_marginLeft="10dp"/>
+        <Button
+            android:id="@+id/lib"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="lib"
+            android:layout_below="@id/seh"/>
+        <Button
+            android:id="@+id/starbuck"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="starbark"
+            android:layout_below="@id/rome"
+            android:layout_toRightOf="@id/lib"
+            android:layout_marginLeft="15dp"/>
+    </RelativeLayout>
+
+</FrameLayout>
