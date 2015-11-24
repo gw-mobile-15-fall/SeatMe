@@ -69,4 +69,6 @@ public class PushInformationActivity extends AppCompatActivity {
 
     }
 
+
+
 }

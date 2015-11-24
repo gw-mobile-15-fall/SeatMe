@@ -1,5 +1,6 @@
 package com.seatme.gwu.seatme.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
@@ -36,7 +37,8 @@ public class SelectService extends AppCompatActivity {
         mSearchSeat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO: add intend to search seat activity
+                Intent intent = new Intent(getBaseContext(), SearchMapsActivity.class);
+                startActivity(intent);
             }
         });
 
@@ -57,7 +59,8 @@ public class SelectService extends AppCompatActivity {
         mSearchShotCut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO: add intend to search seat activity
+                Intent intent = new Intent(getBaseContext(), SearchMapsActivity.class);
+                startActivity(intent);
             }
         });
 
