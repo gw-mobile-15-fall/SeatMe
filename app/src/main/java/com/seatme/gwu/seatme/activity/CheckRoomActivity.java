@@ -23,7 +23,6 @@ public class CheckRoomActivity extends AppCompatActivity {
     private String mPlace;
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

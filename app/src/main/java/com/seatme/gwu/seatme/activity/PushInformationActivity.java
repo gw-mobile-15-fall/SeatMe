@@ -5,15 +5,22 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.SeekBar;
+import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+import com.firebase.client.ValueEventListener;
 import com.seatme.gwu.seatme.Constants;
 import com.seatme.gwu.seatme.R;
+import com.seatme.gwu.seatme.model.RoomInfo;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -30,6 +37,8 @@ public class PushInformationActivity extends AppCompatActivity {
     private SeekBar mFullnessSeekBar;
     private EditText mDescriptionView;
     private int mFullnessValue = 0;
+    private ArrayList<String>  arraySpinner;
+    private Spinner mSpinner;
 
 
     @Override
@@ -42,14 +51,39 @@ public class PushInformationActivity extends AppCompatActivity {
             mAction = Title.getString(Constants.ACTION);
             mRoom = Title.getString(Constants.ROOM);
             System.out.println(mAction);
+            System.out.println(mRoom);
         }
 
         setContentView(R.layout.activity_push_information);
+        mSpinner = (Spinner)findViewById(R.id.push_information_spinner_room);
         mFullnessSeekBar = (SeekBar) findViewById(R.id.push_information_seekbar_fullness);
         mFullnessView = (TextView) findViewById(R.id.push_information_text_fullness);
         mSeatnumbnerView = (EditText) findViewById(R.id.push_information_form_seatnumber);
         mDescriptionView = (EditText) findViewById(R.id.push_information_form_description);
         mSubmitButton = (Button) findViewById(R.id.push_information_form_submit_button);
+
+
+        Firebase myFirebaseRef = new Firebase("https://seatmegwu.firebaseio.com/").child("RoomInfo").child(mRoom);
+
+        myFirebaseRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                arraySpinner = new ArrayList<String>();
+                System.out.println("There are " + snapshot.getChildrenCount() + "  posts");
+                for (DataSnapshot postSnapshot : snapshot.getChildren()) {
+                    RoomInfo roomInfo = postSnapshot.getValue(RoomInfo.class);
+                    arraySpinner.add(roomInfo.getRoom());
+                }
+
+                System.out.println(arraySpinner.indexOf(0));
+                changeSpinner();
+            }
+
+            @Override
+            public void onCancelled(FirebaseError error) {
+            }
+        });
+
 
 
         mFullnessSeekBar.setOnSeekBarChangeListener(
@@ -89,6 +123,15 @@ public class PushInformationActivity extends AppCompatActivity {
         });
     }
 
+
+    private void changeSpinner(){
+
+        ArrayAdapter<String> adapter = new ArrayAdapter(this,
+                android.R.layout.simple_spinner_dropdown_item, arraySpinner);
+
+        mSpinner.setAdapter(adapter);
+    }
+
     private void attemptPushData(String room) {
 
         String fullness = Integer.toString(mFullnessValue);
@@ -103,7 +146,7 @@ public class PushInformationActivity extends AppCompatActivity {
             return;
         }
 
-        Firebase myFirebaseRef = new Firebase("https://seatmegwu.firebaseio.com/").child(room);
+        Firebase myFirebaseRef = new Firebase("https://seatmegwu.firebaseio.com/").child("").child(room);
 
         Map<String, String> post = new HashMap<String, String>();
         post.put("fullness", fullness);
