@@ -58,6 +58,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private View mLoginFormView;
     private Button mLoginButton;
     private Button mSignupButton;
+    private Button mGuestButton;
 
 
     @Override
@@ -71,6 +72,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         mSignupButton = (Button) findViewById(R.id.login_form_sign_up_button);
         mLoginButton= (Button) findViewById(R.id.login_form_login_button);
+        mGuestButton= (Button) findViewById(R.id.login_guest_button);
 
         mEmailView = (AutoCompleteTextView) findViewById(R.id.login_form_email);
         populateAutoComplete();
@@ -95,6 +97,16 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             }
         });
 
+
+        mGuestButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d(TAG, "guest");
+
+                Intent intent = new Intent(getBaseContext(), SelectService.class);
+                startActivity(intent);
+            }
+        });
 
 
 

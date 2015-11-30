@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 
+import com.seatme.gwu.seatme.Constants;
 import com.seatme.gwu.seatme.R;
 
 /**
@@ -38,6 +39,7 @@ public class SelectService extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getBaseContext(), SearchMapsActivity.class);
+                intent.putExtra(Constants.ACTION, "Search");
                 startActivity(intent);
             }
         });
@@ -45,7 +47,10 @@ public class SelectService extends AppCompatActivity {
         mPlaceSeat.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                //TODO: add intend to place seat activity
+                Intent intent = new Intent(getBaseContext(), SearchMapsActivity.class);
+                intent.putExtra(Constants.ACTION, "Place");
+                startActivity(intent);
+
             }
         });
 
@@ -60,6 +65,7 @@ public class SelectService extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getBaseContext(), SearchMapsActivity.class);
+                intent.putExtra(Constants.ACTION, "Search");
                 startActivity(intent);
             }
         });
@@ -67,7 +73,10 @@ public class SelectService extends AppCompatActivity {
         mPlaceShotCut.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                //TODO: add intend to place seat activity
+                Intent intent = new Intent(getBaseContext(), SearchMapsActivity.class);
+                intent.putExtra(Constants.ACTION, "Place");
+                startActivity(intent);
+
             }
         });
         mReward.setOnClickListener(new View.OnClickListener(){

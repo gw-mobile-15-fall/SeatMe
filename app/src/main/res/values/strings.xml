@@ -35,16 +35,28 @@
         completions."
     </string>
 
+    <string name="action_guest">Guest</string>
+
+
     <string name="action_sign_in">Sign in or register</string>
     <string name="action_sign_in_short">Sign in</string>
 
     <string name="action_submit">submit</string>
 
 
-    <string name="prompt_fullness">fullness</string>
-    <string name="prompt_seatnumber">number of seat</string>
+    <string name="prompt_room">Room</string>
+    <string name="prompt_fullness">Fullness</string>
+    <string name="prompt_seatnumber">Number of seat</string>
+    <string name="prompt_description">Description</string>
+    <string name="default_percentage">0/100</string>
+
     <string name="title_activity_search_maps">Map</string>
     <string name="place_details">&lt;b&gt;%1$s&lt;/b&gt;&lt;br/&gt;&lt;i&gt;Place Id: %2$s&lt;/i&gt;&lt;br/&gt;Address: %3$s&lt;br/&gt;Phone: %4$s&lt;br/&gt;Website: %5$s</string>
     <string name="clear_text">Clear</string>
+
+    <string-array name="default_room">
+        <item>room1</item>
+        <item>room2</item>
+    </string-array>
 
 </resources>

@@ -16,7 +16,10 @@ import com.seatme.gwu.seatme.model.Room;
 public class RoomListAdapter extends ArrayAdapter<String> {
     private final Activity context;
     private Room r;
+
+
     public RoomListAdapter(Activity context, Room room) {
+
         super(context, R.layout.room_list, room.room);
         this.context = context;
         r = room;
@@ -27,8 +30,8 @@ public class RoomListAdapter extends ArrayAdapter<String> {
         View rowView = inflater.inflate(R.layout.room_list, null, true);
         TextView room = (TextView)rowView.findViewById(R.id.room_num);
         TextView descrpit = (TextView) rowView.findViewById(R.id.room_description);
-        room.setText(r.room[position]);
-        descrpit.setText(r.discription[position]);
+       // room.setText(r.room[position]);
+        //descrpit.setText(r.discription[position]);
         return rowView;
     }
 }

@@ -10,7 +10,8 @@
               android:layout_height="match_parent"
               android:id="@+id/map"
               tools:context="com.seatme.gwu.seatme.activity.SearchMapsActivity"
-              android:name="com.google.android.gms.maps.SupportMapFragment"/>
+              android:name="com.google.android.gms.maps.SupportMapFragment"
+        />
 
     <RelativeLayout
         android:layout_width="match_parent"

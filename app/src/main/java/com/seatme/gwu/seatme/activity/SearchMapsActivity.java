@@ -27,6 +27,7 @@ import com.google.android.gms.location.places.AutocompletePrediction;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.PlaceBuffer;
 import com.google.android.gms.location.places.Places;
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -34,6 +35,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.seatme.gwu.seatme.Constants;
 import com.seatme.gwu.seatme.R;
 import com.seatme.gwu.seatme.asynctask.FindPlaceTask;
 import com.seatme.gwu.seatme.util.GooglePlacesAutocompleteAdapter;
@@ -57,8 +59,7 @@ public class SearchMapsActivity extends FragmentActivity implements GoogleApiCli
     private static final LatLngBounds BOUNDS_GREATER_SYDNEY = new LatLngBounds(
             new LatLng(-34.041458, 150.790100), new LatLng(-33.682247, 151.383362));
 
-
-
+    private String mAction;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,13 +67,32 @@ public class SearchMapsActivity extends FragmentActivity implements GoogleApiCli
         setContentView(R.layout.search_place);
         setUpMapIfNeeded();
 
+        Bundle Title = getIntent().getExtras();
+        if (Title != null) {
+            mAction = Title.getString(Constants.ACTION);
+            System.out.println(mAction);
+        }
+
         mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
             @Override
             public void onInfoWindowClick(Marker marker) {
-                Intent intent = new Intent(getBaseContext(), CheckRoomActivity.class);
+                Intent intent;
+                System.out.println(mAction);
+
+                if(mAction.equals("Search")) {
+                    intent = new Intent(getBaseContext(), CheckRoomActivity.class);
+                }else if(mAction.equals("Place")){
+                    intent = new Intent(getBaseContext(), PushInformationActivity.class);
+                }else{
+                    intent = new Intent(getBaseContext(), LoginActivity.class);
+                }
+
+                intent.putExtra(Constants.ROOM, marker.getTitle());
+                intent.putExtra(Constants.ACTION, mAction);
                 startActivity(intent);
             }
         });
+
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this)
@@ -106,6 +126,12 @@ public class SearchMapsActivity extends FragmentActivity implements GoogleApiCli
                 mAutocompleteView.setText("");
             }
         });
+
+        CameraUpdate point = CameraUpdateFactory.newLatLng(new LatLng(38.900199, -77.050498));
+// moves camera to coordinates
+        mMap.moveCamera(point);
+// animates camera to coordinates
+        mMap.animateCamera(point);
 
     }
 
@@ -254,7 +280,7 @@ public class SearchMapsActivity extends FragmentActivity implements GoogleApiCli
     private void setUpMap() {
 
        // mMap.addMarker(new MarkerOptions().position(new LatLng(0, 0)).title("Marker"));
-        mMap.setMyLocationEnabled(true);
+        //mMap.setMyLocationEnabled(true);
         mMap.addMarker(new MarkerOptions().position(new LatLng(38.8994781,-77.0486021)).title("Gelman Lib, click me"));
         mMap.addMarker(new MarkerOptions().position(new LatLng(38.900144,-77.0495843)).title("SEH, click me"));
         mMap.addMarker(new MarkerOptions().position(new LatLng(38.8989895,-77.0498478)).title("Tompkins, click me"));
