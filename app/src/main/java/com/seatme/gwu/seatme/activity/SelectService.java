@@ -8,6 +8,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import com.seatme.gwu.seatme.Constants;
 import com.seatme.gwu.seatme.R;
@@ -57,7 +58,7 @@ public class SelectService extends AppCompatActivity {
         mHome.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                //TODO: add intend to go back to SelectService activity
+                Toast.makeText(getBaseContext(), "You are already here, please pick services@", Toast.LENGTH_LONG).show();
             }
         });
 
@@ -82,14 +83,16 @@ public class SelectService extends AppCompatActivity {
         mReward.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                //TODO: add intend to reward activity
+                Intent intent = new Intent(getBaseContext(), RewardActivity.class);
+                startActivity(intent);
             }
         });
 
         mProfile.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                //TODO: add intend to profile setting activity
+                Intent intent = new Intent(getBaseContext(), ProfileActivity.class);
+                startActivity(intent);
             }
         });
     }
