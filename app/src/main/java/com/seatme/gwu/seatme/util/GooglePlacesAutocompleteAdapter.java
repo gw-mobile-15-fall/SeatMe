@@ -156,7 +156,7 @@ public class GooglePlacesAutocompleteAdapter extends ArrayAdapter<AutocompletePr
     /**
      * Submits an autocomplete query to the Places Geo Data Autocomplete API.
      * Results are returned as frozen AutocompletePrediction objects, ready to be cached.
-     * objects to store the Place ID and description that the API returns.
+     * objects to store the Room ID and description that the API returns.
      * Returns an empty list if no results were found.
      * Returns null if the API client is not available or the query did not complete
      * successfully.

@@ -91,13 +91,13 @@ public class SearchMapsActivity extends FragmentActivity implements GoogleApiCli
 
                 if(mAction.equals("Search")) {
                     intent = new Intent(getBaseContext(), CheckRoomActivity.class);
-                }else if(mAction.equals("Place")){
+                }else if(mAction.equals("Room")){
                     intent = new Intent(getBaseContext(), PushInformationActivity.class);
                 }else{
                     intent = new Intent(getBaseContext(), LoginActivity.class);
                 }
 
-                intent.putExtra(Constants.ROOM, marker.getTitle());
+                intent.putExtra(Constants.PLACE, marker.getTitle());
                 intent.putExtra(Constants.ACTION, mAction);
                 startActivity(intent);
             }
@@ -127,7 +127,7 @@ public class SearchMapsActivity extends FragmentActivity implements GoogleApiCli
         mAdapter = new GooglePlacesAutocompleteAdapter(this, mGoogleApiClientGeo, BOUNDS_GREATER_SYDNEY,
                 null);
         mAutocompleteView.setAdapter(mAdapter);
-        if(mAction.equals("Place"))
+        if(mAction.equals("Room"))
             mAutocompleteView.setText("Share your location info!");
 
         // Set up the 'clear text' button that clears the text in the autocomplete view
@@ -172,7 +172,7 @@ public class SearchMapsActivity extends FragmentActivity implements GoogleApiCli
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getBaseContext(), SearchMapsActivity.class);
-                intent.putExtra(Constants.ACTION, "Place");
+                intent.putExtra(Constants.ACTION, "Room");
                 startActivity(intent);
             }
         });
@@ -199,7 +199,7 @@ public class SearchMapsActivity extends FragmentActivity implements GoogleApiCli
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             /*
              Retrieve the place ID of the selected item from the Adapter.
-             The adapter stores each Place suggestion in a AutocompletePrediction from which we
+             The adapter stores each Room suggestion in a AutocompletePrediction from which we
              read the place ID and title.
               */
             final AutocompletePrediction item = mAdapter.getItem(position);
@@ -209,7 +209,7 @@ public class SearchMapsActivity extends FragmentActivity implements GoogleApiCli
             Log.i(TAG, "Autocomplete item selected: " + primaryText);
 
             /*
-             Issue a request to the Places Geo Data API to retrieve a Place object with additional
+             Issue a request to the Places Geo Data API to retrieve a Room object with additional
              details about the place.
               */
             PendingResult<PlaceBuffer> placeResult = Places.GeoDataApi
@@ -218,7 +218,7 @@ public class SearchMapsActivity extends FragmentActivity implements GoogleApiCli
 
             Toast.makeText(getApplicationContext(), "Clicked: " + primaryText,
                     Toast.LENGTH_SHORT).show();
-            Log.i(TAG, "Called getPlaceById to get Place details for " + placeId);
+            Log.i(TAG, "Called getPlaceById to get Room details for " + placeId);
         }
     };
 
@@ -228,11 +228,11 @@ public class SearchMapsActivity extends FragmentActivity implements GoogleApiCli
         public void onResult(PlaceBuffer places) {
             if (!places.getStatus().isSuccess()) {
                 // Request did not complete successfully
-                Log.e(TAG, "Place query did not complete. Error: " + places.getStatus().toString());
+                Log.e(TAG, "Room query did not complete. Error: " + places.getStatus().toString());
                 places.release();
                 return;
             }
-            // Get the Place object from the buffer.
+            // Get the Room object from the buffer.
             final Place place = places.get(0);
 /*
             // Format details of the place for display and show it in a TextView.
@@ -249,7 +249,7 @@ public class SearchMapsActivity extends FragmentActivity implements GoogleApiCli
                 mPlaceDetailsAttribution.setText(Html.fromHtml(thirdPartyAttribution.toString()));
             }
 
-            Log.i(TAG, "Place details received: " + place.getName());
+            Log.i(TAG, "Room details received: " + place.getName());
 */
             String url = "https://maps.googleapis.com/maps/api/geocode/json?";
             String location = mAutocompleteView.getText().toString();
@@ -341,13 +341,12 @@ public class SearchMapsActivity extends FragmentActivity implements GoogleApiCli
         //mMap.setMyLocationEnabled(true);
         mMap.setMyLocationEnabled(true);
 
-    if(mAction.equals("Search")){
+
             mMap.setMyLocationEnabled(true);
             mMap.addMarker(new MarkerOptions().position(new LatLng(38.8994781, -77.0486021)).title("Gelman Lib, click me"));
             mMap.addMarker(new MarkerOptions().position(new LatLng(38.900144, -77.0495843)).title("SEH, click me"));
             mMap.addMarker(new MarkerOptions().position(new LatLng(38.8989895, -77.0498478)).title("Tompkins, click me"));
             mMap.addMarker(new MarkerOptions().position(new LatLng(38.9003921, -77.0482805)).title("Rome Hall, click me"));
-        }
 
     }
 
@@ -357,7 +356,7 @@ public class SearchMapsActivity extends FragmentActivity implements GoogleApiCli
         double longitude = location.getLongitude();
         LatLng latLng = new LatLng(latitude, longitude);
        // mMap.addMarker(new MarkerOptions().position(latLng));
-        if(mAction.equals("Place")) {
+        if(mAction.equals("Room")) {
             mMap.addMarker(new MarkerOptions().position(latLng).title("You are here"));
         }
         mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
@@ -380,7 +379,7 @@ public class SearchMapsActivity extends FragmentActivity implements GoogleApiCli
         double currentLatitude = location.getLatitude();
         double currentLongitude = location.getLongitude();
         LatLng latLng = new LatLng(currentLatitude, currentLongitude);
-        if(mAction.equals("Place")){
+        if(mAction.equals("Room")){
             MarkerOptions options = new MarkerOptions()
                     .position(latLng)
                     .title("You are here!");

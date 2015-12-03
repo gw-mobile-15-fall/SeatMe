@@ -4,7 +4,7 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent">
     <TextView
-        android:id="@+id/room_num"
+        android:id="@+id/room_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:singleLine="true"
@@ -13,11 +13,30 @@
         android:minEms="7"
         />
     <TextView
-        android:id="@+id/room_description"
+        android:id="@+id/room_fullness"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:singleLine="true"
         android:paddingRight="4dp"
         android:paddingLeft="4dp"
         />
+
+    <TextView
+        android:id="@+id/room_seat_number"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:singleLine="true"
+        android:paddingRight="4dp"
+        android:paddingLeft="4dp"
+        />
+
+    <TextView
+        android:id="@+id/room_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:singleLine="true"
+        android:paddingRight="4dp"
+        android:paddingLeft="4dp"
+        />
+
 </LinearLayout>

@@ -10,9 +10,10 @@ import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 import com.seatme.gwu.seatme.Constants;
 import com.seatme.gwu.seatme.R;
-import com.seatme.gwu.seatme.model.Place;
 import com.seatme.gwu.seatme.model.Room;
 import com.seatme.gwu.seatme.util.RoomListAdapter;
+
+import java.util.ArrayList;
 
 /**
  * Created by Yan on 11/19/2015.
@@ -21,6 +22,7 @@ public class CheckRoomActivity extends AppCompatActivity {
     private ListView mListView;
 
     private String mPlace;
+    private ArrayList<Room> mRooms;
 
 
     @Override
@@ -28,36 +30,82 @@ public class CheckRoomActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.search_room_info);
         mListView = (ListView) findViewById(R.id.room_list);
-        //TODO: add a data structure for rooms in a building, the following is just example code
-        Room r = new Room();
-        RoomListAdapter adapter = new RoomListAdapter(this, r);
-        mListView.setAdapter(adapter);
+        mRooms = new ArrayList<Room>();
 
         Firebase.setAndroidContext(this);
 
         Bundle Title = getIntent().getExtras();
         if (Title != null) {
-            mPlace = Title.getString(Constants.ROOM);
+            mPlace = Title.getString(Constants.PLACE);
         }
 
         Firebase myFirebaseRef = new Firebase("https://seatmegwu.firebaseio.com/");
 
         System.out.println(mPlace);
 
+
+
         myFirebaseRef.child(mPlace).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
 
                 System.out.println("There are " + snapshot.getChildrenCount() + "  posts");
-                for (DataSnapshot postSnapshot: snapshot.getChildren()) {
-                    Place room = postSnapshot.getValue(Place.class);
-                    System.out.println(room.getNumberOfSeat());
-                    System.out.println(room.getFullness());
-                }
+                for (DataSnapshot postSnapshot : snapshot.getChildren()) {
+                    //getRooms(postSnapshot.getKey());
+                    long numOfChild = postSnapshot.getChildrenCount();
+                    long i = 0;
+                    if(numOfChild <=0)
+                        continue;
 
+                    for (DataSnapshot postSnapshotChild : postSnapshot.getChildren()){
+                        i++;
+                        if(i<numOfChild)
+                            continue;
+                        Room room = postSnapshotChild.getValue(Room.class);
+                        System.out.println(room.getName());
+                        mRooms.add(room);
+                        break;
+                    }
+                }
+                changeAdapter();
             }
-            @Override public void onCancelled(FirebaseError error) { }
+
+            @Override
+            public void onCancelled(FirebaseError error) {
+            }
         });
 
     }
+
+    void changeAdapter(){
+        RoomListAdapter adapter = new RoomListAdapter(this, mRooms);
+        mListView.setAdapter(adapter);
+        System.out.println("change adapter!");
+    }
+
+    void getRooms(String roomName){
+
+        Firebase myFirebaseRef = new Firebase("https://seatmegwu.firebaseio.com/");
+        myFirebaseRef.child(mPlace).child(roomName).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+                    Room room = postSnapshot.getValue(Room.class);
+                    System.out.println(room.getName());
+                    //System.out.println(room.getNumberOfSeat());
+                   // System.out.println(room.getFullness());
+                    mRooms.add(room);
+                    break;
+                }
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+            }
+        });
+
+
+    }
+
+
 }

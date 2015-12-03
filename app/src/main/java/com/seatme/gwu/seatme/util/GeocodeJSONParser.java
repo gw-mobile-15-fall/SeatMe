@@ -48,7 +48,7 @@ public class GeocodeJSONParser {
         return placesList;
     }
 
-    /** Parsing the Place JSON object */
+    /** Parsing the Room JSON object */
     private HashMap<String, String> getPlace(JSONObject jPlace){
 
         HashMap<String, String> place = new HashMap<String, String>();

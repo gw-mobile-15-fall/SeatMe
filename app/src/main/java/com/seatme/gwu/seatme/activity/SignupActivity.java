@@ -58,6 +58,7 @@ public class SignupActivity extends AppCompatActivity implements LoaderCallbacks
     // UI references.
     private AutoCompleteTextView mEmailView;
     private EditText mPasswordView;
+    private EditText mUsernameView;
     private View mProgressView;
     private View mLoginFormView;
 
@@ -69,6 +70,8 @@ public class SignupActivity extends AppCompatActivity implements LoaderCallbacks
         // Set up the login form.
         mEmailView = (AutoCompleteTextView) findViewById(R.id.signup_form_email);
         populateAutoComplete();
+
+        mUsernameView = (EditText) findViewById(R.id.signup_form_username);
 
         mPasswordView = (EditText) findViewById(R.id.signup_form_password);
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -154,10 +157,12 @@ public class SignupActivity extends AppCompatActivity implements LoaderCallbacks
         // Reset errors.
         mEmailView.setError(null);
         mPasswordView.setError(null);
+        mUsernameView.setError(null);
 
         // Store values at the time of the login attempt.
         String email = mEmailView.getText().toString();
         String password = mPasswordView.getText().toString();
+        String username = mUsernameView.getText().toString();
 
         boolean cancel = false;
         View focusView = null;
@@ -178,6 +183,10 @@ public class SignupActivity extends AppCompatActivity implements LoaderCallbacks
             mEmailView.setError(getString(R.string.error_invalid_email));
             focusView = mEmailView;
             cancel = true;
+        }else if (TextUtils.isEmpty(username)) {
+            mUsernameView.setError(getString(R.string.error_invalid_username));
+            focusView = mUsernameView;
+            cancel = true;
         }
 
         if (cancel) {
@@ -190,7 +199,7 @@ public class SignupActivity extends AppCompatActivity implements LoaderCallbacks
             showProgress(true);
 
             ParseUser user = new ParseUser();
-            user.setUsername(email);
+            user.setUsername(username);
             user.setPassword(password);
             user.setEmail(email);
 

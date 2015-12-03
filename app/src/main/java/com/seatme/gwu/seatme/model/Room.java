@@ -1,34 +1,52 @@
 package com.seatme.gwu.seatme.model;
 
 /**
- * Created by Yan on 11/19/2015.
+ * Created by Huanzhou on 2015/11/30.
  */
 public class Room {
-    public String room[] = {"R101", "R201"};
-    public String discription[] = {"empty", "full"};
+
+    private String name;
+    private String fullness;
+    private String numberOfSeat;
+    private String time;
+    private String description;
+    private String image;
 
 
     public Room(){}
 
-    private String fullness;
-    private String numberOfSeat;
-    private String time;
+    public String getName() {
+        return name;
+    }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
+
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
     public String getFullness() {
         return fullness;
     }
 
-    public String getDate() {
+    public void setFullness(String fullness) {
+        this.fullness = fullness;
+    }
+
+    public String getTime() {
         return time;
     }
 
-    public void setDate(String time) {
+    public void setTime(String time) {
         this.time = time;
-    }
-
-    public void setFullness(String fullness) {
-        this.fullness = fullness;
     }
 
     public String getNumberOfSeat() {
@@ -38,4 +56,13 @@ public class Room {
     public void setNumberOfSeat(String numberOfSeat) {
         this.numberOfSeat = numberOfSeat;
     }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
 }

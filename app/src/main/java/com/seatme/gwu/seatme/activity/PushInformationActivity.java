@@ -14,6 +14,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -22,12 +23,19 @@ import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
+import com.google.gson.JsonObject;
+import com.koushikdutta.async.future.FutureCallback;
+import com.koushikdutta.ion.Ion;
+import com.koushikdutta.ion.ProgressCallback;
 import com.seatme.gwu.seatme.Constants;
 import com.seatme.gwu.seatme.R;
 import com.seatme.gwu.seatme.model.RoomInfo;
 import com.seatme.gwu.seatme.util.Util;
 
 import java.io.File;
+import java.net.URL;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -44,7 +52,7 @@ public class PushInformationActivity extends AppCompatActivity {
     private EditText mSeatnumbnerView;
     private Button mSubmitButton;
     private String mAction;
-    private String mRoom;
+    private String mPlace;
     private SeekBar mFullnessSeekBar;
     private EditText mDescriptionView;
     private int mFullnessValue = 0;
@@ -52,7 +60,10 @@ public class PushInformationActivity extends AppCompatActivity {
     private Spinner mSpinner;
     private Button mPictureButton;
     private ImageView mImageView;
+    private ProgressBar mImageProgressBar;
 
+    private URL imageS3Url;
+    private boolean mS3ImageFlag = false;
 
 
     @Override
@@ -63,9 +74,9 @@ public class PushInformationActivity extends AppCompatActivity {
         Bundle Title = getIntent().getExtras();
         if (Title != null) {
             mAction = Title.getString(Constants.ACTION);
-            mRoom = Title.getString(Constants.ROOM);
+            mPlace = Title.getString(Constants.PLACE);
             System.out.println(mAction);
-            System.out.println(mRoom);
+            System.out.println(mPlace);
         }
 
         setContentView(R.layout.activity_push_information);
@@ -77,8 +88,11 @@ public class PushInformationActivity extends AppCompatActivity {
         mSubmitButton = (Button) findViewById(R.id.push_information_form_submit_button);
         mPictureButton = (Button) findViewById(R.id.push_information_picture_button);
         mImageView = (ImageView) findViewById(R.id.room_picture);
+        mImageProgressBar = (ProgressBar)findViewById(R.id.push_information_image_progressbar);
 
-        Firebase myFirebaseRef = new Firebase("https://seatmegwu.firebaseio.com/").child("RoomInfo").child(mRoom);
+        mImageProgressBar.setProgress(0);
+
+        Firebase myFirebaseRef = new Firebase("https://seatmegwu.firebaseio.com/").child("RoomInfo").child(mPlace);
 
         myFirebaseRef.addValueEventListener(new ValueEventListener() {
             @Override
@@ -131,7 +145,7 @@ public class PushInformationActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 System.out.println("push data");
-                attemptPushData(mRoom);
+                attemptPushData(mPlace);
                 Intent intent = new Intent(getBaseContext(), SelectService.class);
                 startActivity(intent);
             }
@@ -154,34 +168,66 @@ public class PushInformationActivity extends AppCompatActivity {
         if(requestCode == CAMERA_REQUEST && resultCode == RESULT_OK){
             Bitmap image = (Bitmap) data.getExtras().get("data");
             File externalFilesDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-
             boolean imageSaved = Util.saveReactionImage(image, externalFilesDir);
+            mS3ImageFlag = false;
+
+            if(imageSaved == true) {
+                File imageFile = openHighScoreImage();
+
+
+
+            }
 
             if(imageSaved == false){
                 Log.e(TAG, "Problem saving image");
             }
         }
-
-        finish();
+        //finish();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
 
-
         File imageFile = openHighScoreImage();
 
-        if (imageFile.exists()) {
-            Bitmap bitmap = BitmapFactory.decodeFile(imageFile.getAbsolutePath());
-            mVictorySelfieImageView.setImageBitmap(bitmap);
-            mVictorySelfieImageView.setVisibility(View.VISIBLE);
-        } else {
-            mVictorySelfieImageView.setVisibility(View.GONE);
+        if(mS3ImageFlag==false && imageFile.exists()) {
+            Ion.with(this)
+                    .load("http://52.25.82.212:8080/picture/m_upload_image")
+                    .uploadProgressBar(mImageProgressBar)
+                    .uploadProgressHandler(new ProgressCallback() {
+                        @Override
+                        public void onProgress(long downloaded, long total) {
+                            System.out.println(downloaded);
+                            System.out.println(total);
+
+                        }
+                    })
+                    .setMultipartFile("picture", imageFile)
+                    .asJsonObject()
+                    .setCallback(new FutureCallback<JsonObject>() {
+                        @Override
+                        public void onCompleted(Exception e, JsonObject result) {
+                            if (e == null) {
+                                try {
+                                     imageS3Url = Util.parseJsonFromS3(result);
+                                     mS3ImageFlag = true;
+                                } catch (Exception e1) {
+                                    e1.printStackTrace();
+                                }
+                            }
+                        }
+                    });
         }
 
 
-
+        if (imageFile.exists()) {
+            Bitmap bitmap = BitmapFactory.decodeFile(imageFile.getAbsolutePath());
+            mImageView.setImageBitmap(bitmap);
+            mImageView.setVisibility(View.VISIBLE);
+        } else {
+            mImageView.setVisibility(View.GONE);
+        }
 
 
     }
@@ -203,6 +249,7 @@ public class PushInformationActivity extends AppCompatActivity {
 
     private void attemptPushData(String room) {
 
+        String roomName = mSpinner.getSelectedItem().toString();
         String fullness = Integer.toString(mFullnessValue);
         String seatnumber = mSeatnumbnerView.getText().toString();
         String description =mDescriptionView.getText().toString();
@@ -215,13 +262,21 @@ public class PushInformationActivity extends AppCompatActivity {
             return;
         }
 
-        Firebase myFirebaseRef = new Firebase("https://seatmegwu.firebaseio.com/").child("").child(room);
+        Firebase myFirebaseRef = new Firebase("https://seatmegwu.firebaseio.com/").child(room).child(roomName);
 
         Map<String, String> post = new HashMap<String, String>();
+        post.put("name", roomName);
         post.put("fullness", fullness);
         post.put("numberOfSeat", seatnumber);
-        post.put("time", new Date().toString());
+
+        DateFormat dateFormat = new SimpleDateFormat("hh:mm MM-dd");
+        Date date = new Date();
+        String time=dateFormat.format(date);
+
+        post.put("time", time);
         post.put("description", description);
+        post.put("image", imageS3Url.toString());
+
         myFirebaseRef.push().setValue(post);
 
     }

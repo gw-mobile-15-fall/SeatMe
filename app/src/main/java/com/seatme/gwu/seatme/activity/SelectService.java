@@ -49,7 +49,7 @@ public class SelectService extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getBaseContext(), SearchMapsActivity.class);
-                intent.putExtra(Constants.ACTION, "Place");
+                intent.putExtra(Constants.ACTION, "Room");
                 startActivity(intent);
 
             }
@@ -75,7 +75,7 @@ public class SelectService extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getBaseContext(), SearchMapsActivity.class);
-                intent.putExtra(Constants.ACTION, "Place");
+                intent.putExtra(Constants.ACTION, "Room");
                 startActivity(intent);
 
             }

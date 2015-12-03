@@ -34,4 +34,6 @@ dependencies {
     compile 'com.parse.bolts:bolts-android:1.+'
     compile 'com.parse:parse-android:1.+'
     compile 'com.firebase:firebase-client-android:2.4.0+'
+    compile 'com.koushikdutta.ion:ion:2.+'
+    compile 'com.google.code.gson:gson:2.3'
 }
