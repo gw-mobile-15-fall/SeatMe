@@ -60,5 +60,10 @@
         <item>room1</item>
         <item>room2</item>
     </string-array>
+    <string name="title_activity_profile">Profile</string>
+    <string name="your_info">Your profile</string>
+    <string name="title_activity_reward">Reward</string>
+    <string name="points">You current points:</string>
+    <string name="redeem">Redeem your points</string>
 
 </resources>

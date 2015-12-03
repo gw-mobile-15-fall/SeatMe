@@ -14,6 +14,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -61,17 +62,26 @@ public class SearchMapsActivity extends FragmentActivity implements GoogleApiCli
 
     private String mAction;
 
+    private ImageButton mHome;
+    private ImageButton mSearchShotCut;
+    private ImageButton mPlaceShotCut;
+    private ImageButton mReward;
+    private ImageButton mProfile;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.search_place);
-        setUpMapIfNeeded();
-
         Bundle Title = getIntent().getExtras();
         if (Title != null) {
             mAction = Title.getString(Constants.ACTION);
             System.out.println(mAction);
         }
+
+        setUpMapIfNeeded();
+
+
 
         mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
             @Override
@@ -117,6 +127,8 @@ public class SearchMapsActivity extends FragmentActivity implements GoogleApiCli
         mAdapter = new GooglePlacesAutocompleteAdapter(this, mGoogleApiClientGeo, BOUNDS_GREATER_SYDNEY,
                 null);
         mAutocompleteView.setAdapter(mAdapter);
+        if(mAction.equals("Place"))
+            mAutocompleteView.setText("Share your location info!");
 
         // Set up the 'clear text' button that clears the text in the autocomplete view
         Button clearButton = (Button) findViewById(R.id.button_clear);
@@ -133,6 +145,52 @@ public class SearchMapsActivity extends FragmentActivity implements GoogleApiCli
 // animates camera to coordinates
         mMap.animateCamera(point);
 
+        mHome = (ImageButton) findViewById(R.id.home);
+        mSearchShotCut = (ImageButton) findViewById(R.id.search_button);
+        mPlaceShotCut = (ImageButton) findViewById(R.id.place_button);
+        mReward = (ImageButton) findViewById(R.id.reward);
+        mProfile = (ImageButton) findViewById(R.id.profile);
+
+        mHome.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getBaseContext(), SelectService.class);
+                startActivity(intent);
+            }
+        });
+
+        mSearchShotCut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getBaseContext(), SearchMapsActivity.class);
+                intent.putExtra(Constants.ACTION, "Search");
+                startActivity(intent);
+            }
+        });
+
+        mPlaceShotCut.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getBaseContext(), SearchMapsActivity.class);
+                intent.putExtra(Constants.ACTION, "Place");
+                startActivity(intent);
+            }
+        });
+        mReward.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getBaseContext(), RewardActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        mProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getBaseContext(), ProfileActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     private AdapterView.OnItemClickListener mAutocompleteClickListener
@@ -281,10 +339,15 @@ public class SearchMapsActivity extends FragmentActivity implements GoogleApiCli
 
        // mMap.addMarker(new MarkerOptions().position(new LatLng(0, 0)).title("Marker"));
         //mMap.setMyLocationEnabled(true);
-        mMap.addMarker(new MarkerOptions().position(new LatLng(38.8994781,-77.0486021)).title("Gelman Lib, click me"));
-        mMap.addMarker(new MarkerOptions().position(new LatLng(38.900144,-77.0495843)).title("SEH, click me"));
-        mMap.addMarker(new MarkerOptions().position(new LatLng(38.8989895,-77.0498478)).title("Tompkins, click me"));
-        mMap.addMarker(new MarkerOptions().position(new LatLng(38.9003921,-77.0482805)).title("Rome Hall, click me"));
+        mMap.setMyLocationEnabled(true);
+
+    if(mAction.equals("Search")){
+            mMap.setMyLocationEnabled(true);
+            mMap.addMarker(new MarkerOptions().position(new LatLng(38.8994781, -77.0486021)).title("Gelman Lib, click me"));
+            mMap.addMarker(new MarkerOptions().position(new LatLng(38.900144, -77.0495843)).title("SEH, click me"));
+            mMap.addMarker(new MarkerOptions().position(new LatLng(38.8989895, -77.0498478)).title("Tompkins, click me"));
+            mMap.addMarker(new MarkerOptions().position(new LatLng(38.9003921, -77.0482805)).title("Rome Hall, click me"));
+        }
 
     }
 
@@ -294,6 +357,9 @@ public class SearchMapsActivity extends FragmentActivity implements GoogleApiCli
         double longitude = location.getLongitude();
         LatLng latLng = new LatLng(latitude, longitude);
        // mMap.addMarker(new MarkerOptions().position(latLng));
+        if(mAction.equals("Place")) {
+            mMap.addMarker(new MarkerOptions().position(latLng).title("You are here"));
+        }
         mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
         mMap.animateCamera(CameraUpdateFactory.zoomTo(15));
     }
@@ -314,6 +380,12 @@ public class SearchMapsActivity extends FragmentActivity implements GoogleApiCli
         double currentLatitude = location.getLatitude();
         double currentLongitude = location.getLongitude();
         LatLng latLng = new LatLng(currentLatitude, currentLongitude);
+        if(mAction.equals("Place")){
+            MarkerOptions options = new MarkerOptions()
+                    .position(latLng)
+                    .title("You are here!");
+            mMap.addMarker(options);
+        }
 //        MarkerOptions options = new MarkerOptions()
 //                .position(latLng)
 //                .title("I am here!");
