@@ -1,13 +1,19 @@
 package com.seatme.gwu.seatme.activity;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -19,7 +25,9 @@ import com.firebase.client.ValueEventListener;
 import com.seatme.gwu.seatme.Constants;
 import com.seatme.gwu.seatme.R;
 import com.seatme.gwu.seatme.model.RoomInfo;
+import com.seatme.gwu.seatme.util.Util;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -28,6 +36,9 @@ import java.util.Map;
 public class PushInformationActivity extends AppCompatActivity {
 
     private final String TAG = "PushInformationActivity";
+
+    private static final int CAMERA_REQUEST = 1337;
+
 
     private TextView mFullnessView;
     private EditText mSeatnumbnerView;
@@ -39,6 +50,9 @@ public class PushInformationActivity extends AppCompatActivity {
     private int mFullnessValue = 0;
     private ArrayList<String>  arraySpinner;
     private Spinner mSpinner;
+    private Button mPictureButton;
+    private ImageView mImageView;
+
 
 
     @Override
@@ -61,7 +75,8 @@ public class PushInformationActivity extends AppCompatActivity {
         mSeatnumbnerView = (EditText) findViewById(R.id.push_information_form_seatnumber);
         mDescriptionView = (EditText) findViewById(R.id.push_information_form_description);
         mSubmitButton = (Button) findViewById(R.id.push_information_form_submit_button);
-
+        mPictureButton = (Button) findViewById(R.id.push_information_picture_button);
+        mImageView = (ImageView) findViewById(R.id.room_picture);
 
         Firebase myFirebaseRef = new Firebase("https://seatmegwu.firebaseio.com/").child("RoomInfo").child(mRoom);
 
@@ -121,8 +136,62 @@ public class PushInformationActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+
+        mPictureButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                startActivityForResult(cameraIntent,CAMERA_REQUEST);
+                System.out.println("picture");
+            }
+        });
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data){
+        if(requestCode == CAMERA_REQUEST && resultCode == RESULT_OK){
+            Bitmap image = (Bitmap) data.getExtras().get("data");
+            File externalFilesDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+
+            boolean imageSaved = Util.saveReactionImage(image, externalFilesDir);
+
+            if(imageSaved == false){
+                Log.e(TAG, "Problem saving image");
+            }
+        }
+
+        finish();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+
+        File imageFile = openHighScoreImage();
+
+        if (imageFile.exists()) {
+            Bitmap bitmap = BitmapFactory.decodeFile(imageFile.getAbsolutePath());
+            mVictorySelfieImageView.setImageBitmap(bitmap);
+            mVictorySelfieImageView.setVisibility(View.VISIBLE);
+        } else {
+            mVictorySelfieImageView.setVisibility(View.GONE);
+        }
+
+
+
+
+
+    }
+
+    private File openHighScoreImage(){
+        File photosDirectory = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        File imageFile = new File(photosDirectory, Constants.IMAGE_FILE_NAME);
+
+        return imageFile;
+    }
 
     private void changeSpinner(){
 

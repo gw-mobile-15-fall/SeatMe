@@ -10,4 +10,7 @@ public class Constants {
     public static final String ACTION = "ACTION";
     public static final String ROOM = "ROOM";
 
+
+    public static final String IMAGE_FILE_NAME = "SEATME_IMAGE.jpg";
+
 }

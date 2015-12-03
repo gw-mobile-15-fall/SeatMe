@@ -10,49 +10,58 @@
     tools:context="com.seatme.gwu.seatme.activity.PushInformationActivity">
 
 
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="20dp"
-        android:text="@string/prompt_room"
-        android:textSize="20sp"
-        />
-
-    <Spinner
-        android:id="@+id/push_information_spinner_room"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="20dp"
-        android:layout_marginTop="20dp"
-        android:entries="@array/default_room"
-       />
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:text="@string/prompt_room"
+            android:textSize="20dp"
+            />
+
+        <Spinner
+            android:id="@+id/push_information_spinner_room"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="20dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginTop="10dp"
+            android:entries="@array/default_room"
+            />
+
+    </LinearLayout>
 
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="20dp"
-        android:text="@string/prompt_fullness"
-        android:textSize="20sp"
-        />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
-    <SeekBar
-        android:id="@+id/push_information_seekbar_fullness"
-        android:layout_width="250dp"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="26dp"
-        android:max="100"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="20dp"
+            android:text="@string/prompt_fullness"
+            android:textSize="20sp"
+            />
+
+        <SeekBar
+            android:id="@+id/push_information_seekbar_fullness"
+            android:layout_width="180dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="26dp"
+            android:max="100"/>
 
         <TextView
             android:id="@+id/push_information_text_fullness"
@@ -69,22 +78,31 @@
 
 
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_marginLeft="10dp"
-        android:text="@string/prompt_seatnumber"
-        android:textSize="20sp"
-        android:layout_marginTop="30dp"
-        />
 
-    <EditText android:id="@+id/push_information_form_seatnumber"
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:inputType="number"
-        android:maxLines="1"
-        android:singleLine="true" />
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="10dp"
+            android:text="@string/prompt_seatnumber"
+            android:textSize="20sp"
+            android:layout_marginTop="10dp"
+            />
+
+        <EditText android:id="@+id/push_information_form_seatnumber"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:layout_marginTop="10dp"
+            android:maxLines="1"
+            android:singleLine="true" />
+    </LinearLayout>
 
     <TextView
         android:layout_width="wrap_content"
@@ -96,7 +114,6 @@
         android:layout_marginTop="30dp"
         />
 
-
     <EditText  android:id="@+id/push_information_form_description"
         android:inputType="textMultiLine"
     android:gravity="top|left"
@@ -105,9 +122,24 @@
     android:scrollbars="vertical"
     />
 
+    <ImageView
+        android:id="@+id/room_picture"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:scaleType="fitCenter"
+        android:src="@android:drawable/arrow_down_float"/>
+
+    <Button android:id="@+id/push_information_picture_button" style="?android:textAppearanceSmall"
+        android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:layout_marginTop="16dp" android:text="@string/action_picture"
+        android:textStyle="bold" />
+
+
+
+
     <Button android:id="@+id/push_information_form_submit_button" style="?android:textAppearanceSmall"
         android:layout_width="match_parent" android:layout_height="wrap_content"
-        android:layout_marginTop="16dp" android:text="@string/action_submit"
+        android:layout_marginTop="0dp" android:text="@string/action_submit"
         android:textStyle="bold" />
 
 
