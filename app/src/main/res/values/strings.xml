@@ -58,6 +58,10 @@
     <string name="time">Time</string>
 
 
+    <string name="notification_forgetpassword_success">An email has sent, please check </string>
+
+
+
     <string name="title_activity_search_maps">Map</string>
     <string name="place_details">&lt;b&gt;%1$s&lt;/b&gt;&lt;br/&gt;&lt;i&gt;Place Id: %2$s&lt;/i&gt;&lt;br/&gt;Address: %3$s&lt;br/&gt;Phone: %4$s&lt;br/&gt;Website: %5$s</string>
     <string name="clear_text">Clear</string>
@@ -71,5 +75,6 @@
     <string name="title_activity_reward">Reward</string>
     <string name="points">You current points:</string>
     <string name="redeem">Redeem your points</string>
+    <string name="title_activity_forget_password">ForgetPassword</string>
 
 </resources>

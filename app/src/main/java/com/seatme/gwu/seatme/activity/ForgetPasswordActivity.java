@@ -17,20 +17,16 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
-import android.util.Log;
-import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.inputmethod.EditorInfo;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.TextView;
+import android.widget.Toast;
 
-import com.parse.LogInCallback;
 import com.parse.ParseException;
 import com.parse.ParseUser;
+import com.parse.RequestPasswordResetCallback;
 import com.seatme.gwu.seatme.R;
 
 import java.util.ArrayList;
@@ -41,89 +37,46 @@ import static android.Manifest.permission.READ_CONTACTS;
 /**
  * A login screen that offers login via email/password.
  */
-public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<Cursor> {
+public class ForgetPasswordActivity extends AppCompatActivity implements LoaderCallbacks<Cursor> {
 
-    private final String TAG = "LoginActivity";
     /**
      * Id to identity READ_CONTACTS permission request.
      */
     private static final int REQUEST_READ_CONTACTS = 0;
 
+    /**
+     * A dummy authentication store containing known user names and passwords.
+     *
+     */
 
+    /**
+     * Keep track of the login task to ensure we can cancel it if requested.
+     */
 
     // UI references.
     private AutoCompleteTextView mEmailView;
-    private EditText mPasswordView;
     private View mProgressView;
     private View mLoginFormView;
-    private Button mLoginButton;
-    private Button mSignupButton;
-    private Button mGuestButton;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         // Set up the login form.
-
-        mLoginFormView = findViewById(R.id.login_form);
-        mProgressView = findViewById(R.id.login_progress);
-
-        mSignupButton = (Button) findViewById(R.id.login_form_sign_up_button);
-        mLoginButton= (Button) findViewById(R.id.login_form_login_button);
-        mGuestButton= (Button) findViewById(R.id.login_guest_button);
-
-        mEmailView = (AutoCompleteTextView) findViewById(R.id.login_form_email);
+        mEmailView = (AutoCompleteTextView) findViewById(R.id.forgetpassword_form_email);
         populateAutoComplete();
 
-        mPasswordView = (EditText) findViewById(R.id.login_form_password);
-        mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
-                if (id == R.id.login || id == EditorInfo.IME_NULL) {
-                    attemptLogin();
-                    return true;
-                }
-                return false;
-            }
-        });
 
-        Button mEmailSignInButton = (Button) findViewById(R.id.login_form_login_button);
-        mEmailSignInButton.setOnClickListener(new OnClickListener() {
+        Button mForgetpasswordButton = (Button) findViewById(R.id.forgetpassword_form_button);
+        mForgetpasswordButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                attemptLogin();
-
-
+                attemptForgetPassword();
             }
         });
 
-
-        mGuestButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Log.d(TAG, "guest");
-
-                Intent intent = new Intent(getBaseContext(), SelectService.class);
-                startActivity(intent);
-            }
-        });
-
-
-
-        mSignupButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Log.d(TAG, "signup button pressed");
-
-                Intent intent = new Intent(getBaseContext(), SignupActivity.class);
-                startActivity(intent);
-            }
-        });
-
-
+        mLoginFormView = findViewById(R.id.forgetpassword_form);
+        mProgressView = findViewById(R.id.forgetpassword_progress);
     }
 
     private void populateAutoComplete() {
@@ -175,25 +128,16 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
      * If there are form errors (invalid email, missing fields, etc.), the
      * errors are presented and no actual login attempt is made.
      */
-    private void attemptLogin() {
+    private void attemptForgetPassword() {
 
         // Reset errors.
         mEmailView.setError(null);
-        mPasswordView.setError(null);
 
         // Store values at the time of the login attempt.
         String email = mEmailView.getText().toString();
-        String password = mPasswordView.getText().toString();
 
         boolean cancel = false;
         View focusView = null;
-
-        // Check for a valid password, if the user entered one.
-        if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
-            mPasswordView.setError(getString(R.string.error_invalid_password));
-            focusView = mPasswordView;
-            cancel = true;
-        }
 
         // Check for a valid email address.
         if (TextUtils.isEmpty(email)) {
@@ -206,6 +150,23 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             cancel = true;
         }
 
+        ParseUser.requestPasswordResetInBackground(email, new RequestPasswordResetCallback() {
+            public void done(ParseException e) {
+                if (e == null) {
+                    // An email was successfully sent with reset instructions.
+                    Toast.makeText(getApplicationContext(), R.string.notification_forgetpassword_success, Toast.LENGTH_LONG).show();
+
+                    Intent intent = new Intent(getBaseContext(), LoginActivity.class);
+                    startActivity(intent);
+
+                } else {
+                    // Something went wrong. Look at the ParseException to see what's up.
+                    Toast.makeText(getApplicationContext(),e.toString(), Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+
+
         if (cancel) {
             // There was an error; don't attempt login and focus the first
             // form field with an error.
@@ -215,34 +176,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             // perform the user login attempt.
             showProgress(true);
 
-            System.out.println(email);
-            System.out.println(password);
-
-            ParseUser.logInInBackground(email, password, new LogInCallback() {
-                public void done(ParseUser user, ParseException e) {
-                    if (user != null) {
-                        // Hooray! The user is logged in.
-                        System.out.println(user.getUsername()+" login successfully");
-
-                        Intent intent = new Intent(getBaseContext(), SelectService.class);
-                        startActivity(intent);
-
-                    } else {
-                        System.out.println(e.toString());
-                        // Signup failed. Look at the ParseException to see what happened.
-                    }
-                }
-            });
-
-
-
-
-
-
-
         }
     }
-
 
 
 
@@ -251,10 +186,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         return email.contains("@");
     }
 
-    private boolean isPasswordValid(String password) {
-        //TODO: Replace this with your own logic
-        return password.length() > 4;
-    }
 
     /**
      * Shows the progress UI and hides the login form.
@@ -333,23 +264,17 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         };
 
         int ADDRESS = 0;
-        int IS_PRIMARY = 1;
     }
 
 
     private void addEmailsToAutoComplete(List<String> emailAddressCollection) {
         //Create adapter to tell the AutoCompleteTextView what to show in its dropdown list.
         ArrayAdapter<String> adapter =
-                new ArrayAdapter<>(LoginActivity.this,
+                new ArrayAdapter<>(ForgetPasswordActivity.this,
                         android.R.layout.simple_dropdown_item_1line, emailAddressCollection);
 
         mEmailView.setAdapter(adapter);
     }
-
-
-
-
-
 
 }
 
