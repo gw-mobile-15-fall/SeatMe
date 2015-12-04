@@ -58,17 +58,23 @@ public class ForgetPasswordActivity extends AppCompatActivity implements LoaderC
     private View mProgressView;
     private View mLoginFormView;
 
+    private Button mForgetPasswordButton;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+        setContentView(R.layout.activity_forget_password);
         // Set up the login form.
         mEmailView = (AutoCompleteTextView) findViewById(R.id.forgetpassword_form_email);
         populateAutoComplete();
 
+        mForgetPasswordButton = (Button) findViewById(R.id.forgetpassword_form_button);
 
-        Button mForgetpasswordButton = (Button) findViewById(R.id.forgetpassword_form_button);
-        mForgetpasswordButton.setOnClickListener(new OnClickListener() {
+        System.out.println(mForgetPasswordButton.toString());
+
+
+
+        mForgetPasswordButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
                 attemptForgetPassword();

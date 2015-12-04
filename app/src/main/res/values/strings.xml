@@ -75,6 +75,7 @@
     <string name="points">You current points:</string>
     <string name="redeem">Redeem your points</string>
     <string name="title_activity_forget_password">ForgetPassword</string>
+    <string name="forget_password">Forget Password</string>
 
 
     <string name="change_username">rename</string>
