@@ -60,8 +60,6 @@
 
     <string name="notification_forgetpassword_success">An email has sent, please check </string>
 
-
-
     <string name="title_activity_search_maps">Map</string>
     <string name="place_details">&lt;b&gt;%1$s&lt;/b&gt;&lt;br/&gt;&lt;i&gt;Place Id: %2$s&lt;/i&gt;&lt;br/&gt;Address: %3$s&lt;br/&gt;Phone: %4$s&lt;br/&gt;Website: %5$s</string>
     <string name="clear_text">Clear</string>
@@ -71,10 +69,24 @@
         <item>room2</item>
     </string-array>
     <string name="title_activity_profile">Profile</string>
-    <string name="your_info">Your profile</string>
+    <string name="your_info">User Name: </string>
     <string name="title_activity_reward">Reward</string>
+
     <string name="points">You current points:</string>
     <string name="redeem">Redeem your points</string>
     <string name="title_activity_forget_password">ForgetPassword</string>
+
+
+    <string name="change_username">rename</string>
+    <string name="current_credit">current credit: </string>
+    <string name="change_email">change</string>
+    <string name="user_email">Email:</string>
+    <string name="save_change">Save Change</string>
+    <string name="add_photo">Change Photo</string>
+    <string name="starbuck_fee">200 credits</string>
+    <string name="movie_fee">1000 credits</string>
+    <string name="clear_choice">clear</string>
+    <string name="submit_choice">submit</string>
+
 
 </resources>

@@ -202,6 +202,7 @@ public class SignupActivity extends AppCompatActivity implements LoaderCallbacks
             user.setUsername(username);
             user.setPassword(password);
             user.setEmail(email);
+            user.put("credit",100);
 
             user.signUpInBackground(new SignUpCallback() {
                 public void done(ParseException e) {

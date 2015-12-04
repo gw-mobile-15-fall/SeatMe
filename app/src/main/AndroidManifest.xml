@@ -61,9 +61,21 @@
             android:label="@string/find_seat" >
         </activity>
         <activity
-            android:name=".ForgetPasswordActivity"
+            android:name=".activity.ForgetPasswordActivity"
             android:label="@string/title_activity_forget_password" >
+
         </activity>
+        <activity
+            android:name=".activity.ProfileActivity"
+            android:label="@string/title_activity_profile" >
+
+        </activity>
+
+        <activity
+            android:name=".activity.RewardActivity"
+            android:label="@string/title_activity_reward" >
+        </activity>
+
     </application>
 
 </manifest>
