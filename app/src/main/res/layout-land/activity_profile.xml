@@ -13,11 +13,11 @@
         <TextView
             android:id="@+id/username"
             android:text="@string/your_info"
-            android:layout_width="130dp"
+            android:layout_width="300dp"
             android:layout_height="wrap_content" />
         <EditText
             android:id="@+id/edit_name"
-            android:layout_width="100dp"
+            android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:inputType ="text"
             android:imeOptions="actionDone"/>
@@ -35,11 +35,11 @@
         <TextView
             android:id="@+id/user_email"
             android:text="@string/user_email"
-            android:layout_width="130dp"
+            android:layout_width="300dp"
             android:layout_height="wrap_content" />
         <EditText
             android:id="@+id/edit_email"
-            android:layout_width="100dp"
+            android:layout_width="150dp"
             android:inputType="textEmailAddress"
             android:layout_height="wrap_content"
             android:imeOptions="actionDone"/>
@@ -53,28 +53,40 @@
 
     <TextView
         android:id="@+id/current_credit"
-        android:layout_marginTop="10dp"
+
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/current_credit"/>
-    <ImageView
-        android:id="@+id/my_photo"
-        android:layout_marginTop="5dp"
-        android:layout_width="300dp"
-        android:layout_height="250dp"
-        android:layout_gravity="center"
-        android:src="@drawable/user"/>
-    <Button
-        android:id="@+id/add_photo"
-        android:text="@string/add_photo"
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom|center"/>
-    <Button
-        android:id="@+id/save_usersetting"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|center"
-        android:text="@string/save_change"/>
+        android:orientation="horizontal">
+        <ImageView
+            android:id="@+id/my_photo"
+
+            android:layout_width="400dp"
+            android:layout_height="200dp"
+            android:layout_gravity="center"
+            android:src="@drawable/user"/>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <Button
+                android:id="@+id/add_photo"
+                android:text="@string/add_photo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|center"/>
+            <Button
+                android:id="@+id/save_usersetting"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|center"
+                android:text="@string/save_change"/>
+        </LinearLayout>
+
+    </LinearLayout>
+
 
 </LinearLayout>

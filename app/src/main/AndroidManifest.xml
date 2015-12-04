@@ -61,6 +61,14 @@
             android:name=".activity.CheckRoomActivity"
             android:label="@string/find_seat" >
         </activity>
+        <activity
+            android:name=".activity.RewardActivity"
+            android:label="@string/title_activity_reward" >
+        </activity>
+        <activity
+            android:name=".activity.ProfileActivity"
+            android:label="@string/title_activity_profile" >
+        </activity>
     </application>
 
 </manifest>

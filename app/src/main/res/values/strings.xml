@@ -67,9 +67,19 @@
         <item>room2</item>
     </string-array>
     <string name="title_activity_profile">Profile</string>
-    <string name="your_info">Your profile</string>
+    <string name="your_info">User Name: </string>
     <string name="title_activity_reward">Reward</string>
-    <string name="points">You current points:</string>
-    <string name="redeem">Redeem your points</string>
+    <string name="points">You current credits: </string>
+    <string name="redeem">Redeem your reward: </string>
+    <string name="change_username">rename</string>
+    <string name="current_credit">current credit: </string>
+    <string name="change_email">change</string>
+    <string name="user_email">Email:</string>
+    <string name="save_change">Save Change</string>
+    <string name="add_photo">Change Photo</string>
+    <string name="starbuck_fee">200 credits</string>
+    <string name="movie_fee">1000 credits</string>
+    <string name="clear_choice">clear</string>
+    <string name="submit_choice">submit</string>
 
 </resources>

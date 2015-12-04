@@ -27,6 +27,8 @@ import com.google.gson.JsonObject;
 import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
 import com.koushikdutta.ion.ProgressCallback;
+import com.parse.ParseException;
+import com.parse.ParseUser;
 import com.seatme.gwu.seatme.Constants;
 import com.seatme.gwu.seatme.R;
 import com.seatme.gwu.seatme.model.RoomInfo;
@@ -78,7 +80,8 @@ public class PushInformationActivity extends AppCompatActivity {
             System.out.println(mAction);
             System.out.println(mPlace);
         }
-
+        //TODO: if Title != null solution needed.
+        else mPlace = "Gelman Lib";
         setContentView(R.layout.activity_push_information);
         mSpinner = (Spinner)findViewById(R.id.push_information_spinner_room);
         mFullnessSeekBar = (SeekBar) findViewById(R.id.push_information_seekbar_fullness);
@@ -145,7 +148,14 @@ public class PushInformationActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 System.out.println("push data");
-                attemptPushData(mPlace);
+//                attemptPushData(mPlace);
+                ParseUser user = ParseUser.getCurrentUser();
+                user.increment("credit", 100);
+                try {
+                    user.save();
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
                 Intent intent = new Intent(getBaseContext(), SelectService.class);
                 startActivity(intent);
             }
