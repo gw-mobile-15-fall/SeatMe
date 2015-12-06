@@ -16,10 +16,12 @@ import com.seatme.gwu.seatme.R;
 
 public class RewardActivity extends AppCompatActivity {
     private TextView mCredit;
+    private TextView mRedeemText;
     private RadioGroup mRedeemChoice;
     private ParseUser user;
     private Button mClear;
     private Button mSubmit;
+    private Button mHome;
     private boolean isRedeemable = false;
     private int credit;
     private boolean isClear = false;
@@ -33,14 +35,20 @@ public class RewardActivity extends AppCompatActivity {
         mSubmit = (Button)findViewById(R.id.radio_submit);
         mClear = (Button)findViewById(R.id.clear_choice);
         mRedeemChoice = (RadioGroup) findViewById(R.id.radio_group);
+        mHome = (Button)findViewById(R.id.back_home);
+        mRedeemText = (TextView)findViewById(R.id.redeem_hint);
+
         user=ParseUser.getCurrentUser();
         // if guest user, ask them to signin or signup
         if(user==null){
             mRedeemChoice.setVisibility(View.INVISIBLE);
             mClear.setVisibility(View.INVISIBLE);
-            mSubmit.setText("Home");
+            mSubmit.setVisibility(View.INVISIBLE);
+            mRedeemText.setVisibility(View.INVISIBLE);
+            mHome.setText("Home");
+
             mCredit.setText("Please login or signup to get reward!");
-            mSubmit.setOnClickListener(new View.OnClickListener() {
+            mHome.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(getBaseContext(), LoginActivity.class);
@@ -51,6 +59,7 @@ public class RewardActivity extends AppCompatActivity {
         }
         // if signed in user, check if they are qualified to redeem any rewards
         else {
+            mHome.setVisibility(View.INVISIBLE);
 
             credit = (int)user.getNumber("credit");
             mCredit.setText(mCredit.getText().toString() + credit);

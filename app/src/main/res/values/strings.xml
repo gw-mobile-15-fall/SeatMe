@@ -98,6 +98,7 @@
     <string name="Occupied">Occupied</string>
     <string name="Vacant">Vacant</string>
 
+    <string name="back_home">Home</string>
 
 
 </resources>

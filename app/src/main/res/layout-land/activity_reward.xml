@@ -7,11 +7,26 @@
     android:orientation="vertical"
     tools:context="com.seatme.gwu.seatme.activity.RewardActivity">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <TextView
+            android:id="@+id/my_credit"
+            android:text="@string/points"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"/>
+        <Button
+            android:id="@+id/back_home"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="5dp"
+            android:text="@string/back_home"/>
+
+    </LinearLayout>
     <TextView
-        android:id="@+id/my_credit"
-        android:text="@string/points" android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-    <TextView
+        android:id="@+id/redeem_hint"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
