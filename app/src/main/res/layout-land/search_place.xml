@@ -38,53 +38,64 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom|center"
+        android:layout_gravity="bottom"
         android:orientation="horizontal">
         <ImageButton
             android:id="@+id/home"
-            android:layout_width="125dp"
+            android:layout_width="85dp"
             android:layout_height="60dp"
             android:src="@drawable/home"
+            android:layout_alignParentLeft="true"
             android:layout_marginTop="10dp"
             android:layout_marginLeft="-3dp"
             android:layout_marginRight="-10dp"
             android:scaleType="fitCenter"
+            android:layout_weight=".25"
             />
         <ImageButton
             android:id="@+id/search_button"
-            android:layout_width="125dp"
+            android:layout_width="85dp"
             android:layout_height="60dp"
+            android:layout_weight=".25"
             android:src="@drawable/search"
             android:layout_marginTop="10dp"
             android:layout_marginRight="-10dp"
             android:scaleType="fitCenter"
+            android:layout_toRightOf="@id/home"
             />
         <ImageButton
             android:id="@+id/place_button"
-            android:layout_width="125dp"
+            android:layout_width="85dp"
             android:layout_height="60dp"
             android:src="@drawable/placeloc"
             android:layout_marginTop="10dp"
             android:layout_marginRight="-10dp"
             android:scaleType="fitCenter"
+            android:layout_toRightOf="@id/search_button"
+            android:layout_weight=".25"
             />
         <ImageButton
             android:id="@+id/reward"
-            android:layout_width="130dp"
+            android:layout_width="85dp"
             android:layout_height="60dp"
             android:src="@drawable/reward"
             android:layout_marginTop="10dp"
             android:layout_marginRight="-10dp"
             android:scaleType="fitCenter"
+            android:layout_toRightOf="@id/place_button"
+            android:layout_weight=".25"
             />
         <ImageButton
             android:id="@+id/profile"
-            android:layout_width="130dp"
+            android:layout_width="85dp"
             android:layout_height="60dp"
             android:src="@drawable/profile"
+            android:layout_alignParentRight="true"
             android:layout_marginTop="10dp"
             android:layout_marginRight="-10dp"
             android:scaleType="fitCenter"
+            android:layout_toRightOf="@id/reward"
+            android:layout_weight=".25"
             />
 
     </LinearLayout>
