@@ -13,6 +13,7 @@ import android.widget.Toast;
 import com.parse.ParseUser;
 import com.seatme.gwu.seatme.Constants;
 import com.seatme.gwu.seatme.R;
+import com.seatme.gwu.seatme.util.Util;
 
 /**
  * Created by Yan on 11/1/2015.
@@ -27,10 +28,12 @@ public class SelectService extends AppCompatActivity {
     private ImageButton mProfile;
     private ParseUser user;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.select_service);
+
         mSearchSeat = (Button) findViewById(R.id.search);
         mPlaceSeat = (Button) findViewById(R.id.place);
         mHome = (ImageButton) findViewById(R.id.home);
@@ -50,9 +53,16 @@ public class SelectService extends AppCompatActivity {
         mPlaceSeat.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getBaseContext(), SearchMapsActivity.class);
-                intent.putExtra(Constants.ACTION, "Room");
-                startActivity(intent);
+                //Toast.makeText(getBaseContext(), "You are already here, please pick services@", Toast.LENGTH_LONG).show();
+                if(Util.getCurrentUser()==null){
+                    Toast.makeText(getBaseContext(), R.string.NOTIFICATION_REQUIRELOGIN, Toast.LENGTH_LONG).show();
+                    Intent intent = new Intent(getBaseContext(), LoginActivity.class);
+                    startActivity(intent);
+                }else {
+                    Intent intent = new Intent(getBaseContext(), SearchMapsActivity.class);
+                    intent.putExtra(Constants.ACTION, "Room");
+                    startActivity(intent);
+                }
 
             }
         });
@@ -76,9 +86,17 @@ public class SelectService extends AppCompatActivity {
         mPlaceShotCut.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getBaseContext(), SearchMapsActivity.class);
-                intent.putExtra(Constants.ACTION, "Room");
-                startActivity(intent);
+
+                if(Util.getCurrentUser()==null){
+                   // Toast.makeText(getBaseContext(), "You are already here, please pick services@", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getBaseContext(), R.string.NOTIFICATION_REQUIRELOGIN, Toast.LENGTH_LONG).show();
+                    Intent intent = new Intent(getBaseContext(), LoginActivity.class);
+                    startActivity(intent);
+                }else {
+                    Intent intent = new Intent(getBaseContext(), SearchMapsActivity.class);
+                    intent.putExtra(Constants.ACTION, "Room");
+                    startActivity(intent);
+                }
 
             }
         });

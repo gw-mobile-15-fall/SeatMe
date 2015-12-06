@@ -18,6 +18,7 @@ import android.widget.ProgressBar;
 import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
@@ -143,22 +144,27 @@ public class PushInformationActivity extends AppCompatActivity {
                     }
                 });
 
-
         mSubmitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 System.out.println("push data");
 
-                attemptPushData(mPlace);
                 ParseUser user = ParseUser.getCurrentUser();
-                user.increment("credit", 100);
-                try {
-                    user.save();
-                } catch (ParseException e) {
-                    e.printStackTrace();
+                if(user==null){
+                    Toast.makeText(getBaseContext(), R.string.NOTIFICATION_REQUIRELOGIN, Toast.LENGTH_LONG).show();
+                    Intent intent = new Intent(getBaseContext(), LoginActivity.class);
+                    startActivity(intent);
+                }else {
+                    attemptPushData(mPlace);
+                    user.increment("credit", 100);
+                    try {
+                        user.save();
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                    Intent intent = new Intent(getBaseContext(), SelectService.class);
+                    startActivity(intent);
                 }
-                Intent intent = new Intent(getBaseContext(), SelectService.class);
-                startActivity(intent);
             }
         });
 
@@ -183,10 +189,7 @@ public class PushInformationActivity extends AppCompatActivity {
             mS3ImageFlag = false;
 
             if(imageSaved == true) {
-                File imageFile = openHighScoreImage();
-
-
-
+                File imageFile = openImage();
             }
 
             if(imageSaved == false){
@@ -200,50 +203,54 @@ public class PushInformationActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
-        File imageFile = openHighScoreImage();
+        if(Util.getCurrentUser()==null){
+            Toast.makeText(getBaseContext(), R.string.NOTIFICATION_REQUIRELOGIN, Toast.LENGTH_LONG).show();
+            Intent intent = new Intent(getBaseContext(), LoginActivity.class);
+            startActivity(intent);
+        }else {
 
-        if(mS3ImageFlag==false && imageFile.exists()) {
-            Ion.with(this)
-                    .load("http://52.25.82.212:8080/picture/m_upload_image")
-                    .uploadProgressBar(mImageProgressBar)
-                    .uploadProgressHandler(new ProgressCallback() {
-                        @Override
-                        public void onProgress(long downloaded, long total) {
-                            System.out.println(downloaded);
-                            System.out.println(total);
+            File imageFile = openImage();
 
-                        }
-                    })
-                    .setMultipartFile("picture", imageFile)
-                    .asJsonObject()
-                    .setCallback(new FutureCallback<JsonObject>() {
-                        @Override
-                        public void onCompleted(Exception e, JsonObject result) {
-                            if (e == null) {
-                                try {
-                                     imageS3Url = Util.parseJsonFromS3(result);
-                                     mS3ImageFlag = true;
-                                } catch (Exception e1) {
-                                    e1.printStackTrace();
+            if (mS3ImageFlag == false && imageFile.exists()) {
+                Ion.with(this)
+                        .load("http://52.25.82.212:8080/picture/m_upload_image")
+                        .uploadProgressBar(mImageProgressBar)
+                        .uploadProgressHandler(new ProgressCallback() {
+                            @Override
+                            public void onProgress(long downloaded, long total) {
+                                System.out.println(downloaded);
+                                System.out.println(total);
+
+                            }
+                        })
+                        .setMultipartFile("picture", imageFile)
+                        .asJsonObject()
+                        .setCallback(new FutureCallback<JsonObject>() {
+                            @Override
+                            public void onCompleted(Exception e, JsonObject result) {
+                                if (e == null) {
+                                    try {
+                                        imageS3Url = Util.parseJsonFromS3(result);
+                                        mS3ImageFlag = true;
+                                    } catch (Exception e1) {
+                                        e1.printStackTrace();
+                                    }
                                 }
                             }
-                        }
-                    });
+                        });
+            }
+
+            if (imageFile.exists()) {
+                Bitmap bitmap = BitmapFactory.decodeFile(imageFile.getAbsolutePath());
+                mImageView.setImageBitmap(bitmap);
+                mImageView.setVisibility(View.VISIBLE);
+            } else {
+                mImageView.setVisibility(View.GONE);
+            }
         }
-
-
-        if (imageFile.exists()) {
-            Bitmap bitmap = BitmapFactory.decodeFile(imageFile.getAbsolutePath());
-            mImageView.setImageBitmap(bitmap);
-            mImageView.setVisibility(View.VISIBLE);
-        } else {
-            mImageView.setVisibility(View.GONE);
-        }
-
-
     }
 
-    private File openHighScoreImage(){
+    private File openImage(){
         File photosDirectory = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
         File imageFile = new File(photosDirectory, Constants.IMAGE_FILE_NAME);
 
@@ -291,7 +298,5 @@ public class PushInformationActivity extends AppCompatActivity {
         myFirebaseRef.push().setValue(post);
 
     }
-
-
 
 }
