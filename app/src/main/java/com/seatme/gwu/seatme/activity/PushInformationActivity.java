@@ -148,7 +148,8 @@ public class PushInformationActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 System.out.println("push data");
-//                attemptPushData(mPlace);
+
+                attemptPushData(mPlace);
                 ParseUser user = ParseUser.getCurrentUser();
                 user.increment("credit", 100);
                 try {
