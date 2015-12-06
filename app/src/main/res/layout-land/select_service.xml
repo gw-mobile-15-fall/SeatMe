@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
-    android:gravity="center"
+    android:gravity="center_horizontal|bottom"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
-        android:layout_marginLeft="100dp"
+        android:gravity="center"
         android:orientation="horizontal">
     <Button
         android:id="@+id/search"
@@ -18,6 +18,7 @@
         android:drawableTop="@drawable/search"
         android:alpha="0.8"
         android:text="@string/find_seat"
+
         />
     <Button
         android:id="@+id/place"
@@ -27,59 +28,69 @@
         android:drawableTop="@drawable/placeloc"
         android:alpha="0.8"
         android:text="@string/share_seat"
-        android:layout_marginTop="20dp"
+
         />
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom|center"
         android:orientation="horizontal">
         <ImageButton
             android:id="@+id/home"
-            android:layout_width="125dp"
+            android:layout_width="85dp"
             android:layout_height="60dp"
             android:src="@drawable/home"
+            android:layout_alignParentLeft="true"
             android:layout_marginTop="10dp"
             android:layout_marginLeft="-3dp"
             android:layout_marginRight="-10dp"
             android:scaleType="fitCenter"
+            android:layout_weight=".25"
             />
         <ImageButton
             android:id="@+id/search_button"
-            android:layout_width="125dp"
+            android:layout_width="85dp"
             android:layout_height="60dp"
+            android:layout_weight=".25"
             android:src="@drawable/search"
             android:layout_marginTop="10dp"
             android:layout_marginRight="-10dp"
             android:scaleType="fitCenter"
+            android:layout_toRightOf="@id/home"
             />
         <ImageButton
             android:id="@+id/place_button"
-            android:layout_width="125dp"
+            android:layout_width="85dp"
             android:layout_height="60dp"
             android:src="@drawable/placeloc"
             android:layout_marginTop="10dp"
             android:layout_marginRight="-10dp"
             android:scaleType="fitCenter"
+            android:layout_toRightOf="@id/search_button"
+            android:layout_weight=".25"
             />
         <ImageButton
             android:id="@+id/reward"
-            android:layout_width="130dp"
+            android:layout_width="85dp"
             android:layout_height="60dp"
             android:src="@drawable/reward"
             android:layout_marginTop="10dp"
             android:layout_marginRight="-10dp"
             android:scaleType="fitCenter"
+            android:layout_toRightOf="@id/place_button"
+            android:layout_weight=".25"
             />
         <ImageButton
             android:id="@+id/profile"
-            android:layout_width="130dp"
+            android:layout_width="85dp"
             android:layout_height="60dp"
             android:src="@drawable/profile"
+            android:layout_alignParentRight="true"
             android:layout_marginTop="10dp"
             android:layout_marginRight="-10dp"
             android:scaleType="fitCenter"
+            android:layout_toRightOf="@id/reward"
+            android:layout_weight=".25"
             />
 
     </LinearLayout>

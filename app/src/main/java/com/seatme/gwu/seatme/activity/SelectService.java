@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import com.parse.ParseUser;
 import com.seatme.gwu.seatme.Constants;
 import com.seatme.gwu.seatme.R;
 
@@ -24,6 +25,7 @@ public class SelectService extends AppCompatActivity {
     private ImageButton mPlaceShotCut;
     private ImageButton mReward;
     private ImageButton mProfile;
+    private ParseUser user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -112,10 +114,16 @@ public class SelectService extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-         //   Log.d(TAG, "settings button pressed");
-         //   Intent intent = new Intent(this, SettingsActivity.class);
-        //    startActivity(intent);
+        if (id == R.id.logout) {
+            user = ParseUser.getCurrentUser();
+            // if guest user, ask them to signin or signup
+            if(user==null){
+                Toast.makeText(this,"You are guest user",Toast.LENGTH_SHORT).show();
+            }
+            else {
+                user.logOut();
+                Toast.makeText(this,"logout succeed",Toast.LENGTH_SHORT).show();
+            }
 
             return true;
         }

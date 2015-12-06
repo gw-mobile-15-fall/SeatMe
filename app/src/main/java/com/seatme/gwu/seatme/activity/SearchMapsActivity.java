@@ -356,10 +356,14 @@ public class SearchMapsActivity extends FragmentActivity implements GoogleApiCli
         double longitude = location.getLongitude();
         LatLng latLng = new LatLng(latitude, longitude);
        // mMap.addMarker(new MarkerOptions().position(latLng));
+        /*
         if(mAction.equals("Room")) {
             mMap.addMarker(new MarkerOptions().position(latLng).title("You are here"));
         }
         mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+        mMap.animateCamera(CameraUpdateFactory.zoomTo(15));
+        */
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(38.8994781, -77.0486021)));
         mMap.animateCamera(CameraUpdateFactory.zoomTo(15));
     }
 
@@ -379,17 +383,20 @@ public class SearchMapsActivity extends FragmentActivity implements GoogleApiCli
         double currentLatitude = location.getLatitude();
         double currentLongitude = location.getLongitude();
         LatLng latLng = new LatLng(currentLatitude, currentLongitude);
+        /*
         if(mAction.equals("Room")){
             MarkerOptions options = new MarkerOptions()
                     .position(latLng)
                     .title("You are here!");
             mMap.addMarker(options);
         }
+        */
 //        MarkerOptions options = new MarkerOptions()
 //                .position(latLng)
 //                .title("I am here!");
 //        mMap.addMarker(options);
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(38.8994781, -77.0486021)));
+       // mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
         mMap.animateCamera(CameraUpdateFactory.zoomTo(15), 1000,null);
 
     }
