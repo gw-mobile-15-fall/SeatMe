@@ -91,6 +91,7 @@
 
     <string name="detail_history">Show History</string>
     <string name="history">Recent record:</string>
+    <string name="logout">log out</string>
 
     <string name="NOTIFICATION_LOGINFAILED">Login Failed</string>
     <string name="NOTIFICATION_REQUIRELOGIN">Please Login in</string>
