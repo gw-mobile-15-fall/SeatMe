@@ -95,7 +95,8 @@
 
     <string name="NOTIFICATION_LOGINFAILED">Login Failed</string>
     <string name="NOTIFICATION_REQUIRELOGIN">Please Login in</string>
-
+    <string name="Occupied">Occupied</string>
+    <string name="Vacant">Vacant</string>
 
 
 

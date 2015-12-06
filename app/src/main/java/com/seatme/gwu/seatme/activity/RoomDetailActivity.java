@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.firebase.client.Firebase;
 import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
 import com.seatme.gwu.seatme.Constants;
@@ -30,9 +31,9 @@ public class RoomDetailActivity extends AppCompatActivity {
 
     private final String TAG = "RoomDetailActivity";
 
-    private static int[] COLORS = new int[] { Color.RED, Color.BLUE};
+    private static int[] COLORS = new int[]{Color.RED, Color.BLUE};
 
-    private static String[] NAME_LIST = new String[] { "Taken", "Not Taken"};
+    private static String[] NAME_LIST = new String[]{Constants.OCCUPIED, Constants.VACANT};
     private CategorySeries mSeries = new CategorySeries("");
     private DefaultRenderer mRenderer = new DefaultRenderer();
     private GraphicalView mChartView;
@@ -56,8 +57,6 @@ public class RoomDetailActivity extends AppCompatActivity {
             mPlace = Title.getString(Constants.PLACE);
         }
 
-
-
         mRoomNameView = (TextView) findViewById(R.id.detail_roomname);
         mSeatnumbnerView = (TextView) findViewById(R.id.detail_seatnumber);
         mDescriptionView = (TextView) findViewById(R.id.detail_description);
@@ -73,20 +72,21 @@ public class RoomDetailActivity extends AppCompatActivity {
 
         double taken = Double.parseDouble(r.getFullness());
         double notTaken = 100 - taken;
-        double[] PIECHARTVALUES = new  double[] {taken,notTaken};
+        double[] PIECHARTVALUES = new double[]{taken, notTaken};
 
         mRenderer.setApplyBackgroundColor(true);
         mRenderer.setBackgroundColor(Color.argb(100, 50, 50, 50));
         mRenderer.setChartTitleTextSize(20);
-        mRenderer.setLabelsTextSize(40);
+        mRenderer.setLabelsTextSize(15);
         mRenderer.setShowLegend(false);
+        mRenderer.setShowTickMarks(false);
 
 //        mRenderer.setMargins(new int[]{20, 30, 15, 0 });
         mRenderer.setZoomButtonsVisible(true);
         mRenderer.setStartAngle(90);
 
         for (int i = 0; i < PIECHARTVALUES.length; i++) {
-            mSeries.add(NAME_LIST[i] + " " + PIECHARTVALUES[i]+ "%", PIECHARTVALUES[i]);
+            mSeries.add(NAME_LIST[i] + " " + PIECHARTVALUES[i] + "%", PIECHARTVALUES[i]);
             SimpleSeriesRenderer renderer = new SimpleSeriesRenderer();
             renderer.setColor(COLORS[(mSeries.getItemCount() - 1) % COLORS.length]);
             mRenderer.addSeriesRenderer(renderer);
@@ -103,20 +103,21 @@ public class RoomDetailActivity extends AppCompatActivity {
 
         layout.addView(mChartView, new AbsListView.LayoutParams(AbsListView.LayoutParams.FILL_PARENT, AbsListView.LayoutParams.FILL_PARENT));
 
+        if (!r.getImage().equals("")) {
+            Ion.with(mImageView).load(r.getImage()).setCallback(new FutureCallback<ImageView>() {
+                @Override
+                public void onCompleted(Exception e, ImageView result) {
+                    if (e == null) {
+                        //yay
 
-        Ion.with(mImageView).load(r.getImage()).setCallback(new FutureCallback<ImageView>() {
-            @Override
-            public void onCompleted(Exception e, ImageView result) {
-                if (e == null) {
-                    //yay
+                    } else {
+                        //log the error information , helping to check. Then keep running app without weather icon
+                        Log.d(TAG, "image failed to load " + e.toString());
 
-                } else {
-                    //log the error information , helping to check. Then keep running app without weather icon
-                    Log.d(TAG, "image failed to load " + e.toString());
-
+                    }
                 }
-            }
-        });
+            });
+        }
 
         mHistoryButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -127,8 +128,17 @@ public class RoomDetailActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+    }
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Firebase.goOffline();
+    }
 
-
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Firebase.goOnline();
     }
 
 }

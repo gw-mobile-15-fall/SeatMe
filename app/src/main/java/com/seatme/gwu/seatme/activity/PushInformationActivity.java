@@ -118,7 +118,6 @@ public class PushInformationActivity extends AppCompatActivity {
         });
 
 
-
         mFullnessSeekBar.setOnSeekBarChangeListener(
                 new SeekBar.OnSeekBarChangeListener() {
                     int progress = 0;
@@ -180,6 +179,13 @@ public class PushInformationActivity extends AppCompatActivity {
         });
     }
 
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Firebase.goOffline();
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data){
         if(requestCode == CAMERA_REQUEST && resultCode == RESULT_OK){
@@ -202,6 +208,8 @@ public class PushInformationActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+
+        Firebase.goOnline();
 
         if(Util.getCurrentUser()==null){
             Toast.makeText(getBaseContext(), R.string.NOTIFICATION_REQUIRELOGIN, Toast.LENGTH_LONG).show();
@@ -293,7 +301,9 @@ public class PushInformationActivity extends AppCompatActivity {
 
         post.put("time", time);
         post.put("description", description);
-        post.put("image", imageS3Url.toString());
+        if(imageS3Url==null)
+            post.put("image", "");
+        else post.put("image", imageS3Url.toString());
 
         myFirebaseRef.push().setValue(post);
 

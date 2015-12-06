@@ -34,6 +34,7 @@ import com.parse.LogInCallback;
 import com.parse.ParseException;
 import com.parse.ParseUser;
 import com.seatme.gwu.seatme.R;
+import com.seatme.gwu.seatme.util.Util;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -70,6 +71,11 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         // Set up the login form.
+
+        if(Util.getCurrentUser()!=null){
+            Intent intent = new Intent(getBaseContext(), SelectService.class);
+            startActivity(intent);
+        }
 
         activity = this;
         mLoginFormView = findViewById(R.id.login_form);

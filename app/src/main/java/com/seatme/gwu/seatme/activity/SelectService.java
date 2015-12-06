@@ -141,6 +141,8 @@ public class SelectService extends AppCompatActivity {
             else {
                 user.logOut();
                 Toast.makeText(this,"logout succeed",Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(getBaseContext(), SelectService.class);
+                startActivity(intent);
             }
 
             return true;

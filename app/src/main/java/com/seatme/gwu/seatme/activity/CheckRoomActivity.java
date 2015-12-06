@@ -88,6 +88,18 @@ public class CheckRoomActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Firebase.goOffline();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Firebase.goOnline();
+    }
+
     void changeAdapter(){
         RoomListAdapter adapter = new RoomListAdapter(this, mRooms);
         mListView.setAdapter(adapter);

@@ -77,11 +77,22 @@ public class HistoryActivity extends AppCompatActivity {
                 Room r = (Room) list.getItemAtPosition(pos);
                 mPersistanceManager.saveRoom(r);
                 Intent intent = new Intent(getBaseContext(), RoomDetailActivity.class);
+                intent.putExtra(Constants.PLACE, mPlace);
                 startActivity(intent);
             }
         });
+    }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Firebase.goOffline();
+    }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Firebase.goOnline();
     }
 
     void changeAdapter() {

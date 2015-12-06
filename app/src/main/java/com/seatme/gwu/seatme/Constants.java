@@ -17,8 +17,10 @@ public class Constants {
     public static final String TIME= "TIME";
     public static final String DESCRIPTION= "DESCRIPTION";
     public static final String IMAGE= "IMAGE";
-
+    public static final String OCCUPIED = "Occupied";
+    public static final String VACANT = "Vacant";
 
     public static final String IMAGE_FILE_NAME = "SEATME_IMAGE.jpg";
+
 
 }
