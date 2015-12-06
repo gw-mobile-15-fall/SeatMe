@@ -3,6 +3,7 @@ package com.seatme.gwu.seatme.activity;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.app.Activity;
 import android.app.LoaderManager.LoaderCallbacks;
 import android.content.CursorLoader;
 import android.content.Intent;
@@ -27,6 +28,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.parse.LogInCallback;
 import com.parse.ParseException;
@@ -50,7 +52,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private static final int REQUEST_READ_CONTACTS = 0;
 
 
-
     // UI references.
     private AutoCompleteTextView mEmailView;
     private EditText mPasswordView;
@@ -60,6 +61,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private Button mSignupButton;
     private Button mGuestButton;
     private Button mForgetPasswordButton;
+    Activity activity;
 
 
 
@@ -69,6 +71,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         setContentView(R.layout.activity_login);
         // Set up the login form.
 
+        activity = this;
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
 
@@ -135,8 +138,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 startActivity(intent);
             }
         });
-
-
     }
 
     private void populateAutoComplete() {
@@ -239,19 +240,14 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
                         Intent intent = new Intent(getBaseContext(), SelectService.class);
                         startActivity(intent);
-
                     } else {
                         System.out.println(e.toString());
+                        Toast.makeText(activity, R.string.NOTIFICATION_LOGINFAILED, Toast.LENGTH_LONG).show();
+                        showProgress(false);
                         // Signup failed. Look at the ParseException to see what happened.
                     }
                 }
             });
-
-
-
-
-
-
 
         }
     }
@@ -358,10 +354,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         mEmailView.setAdapter(adapter);
     }
-
-
-
-
 
 
 }

@@ -50,7 +50,6 @@ public class SignupActivity extends AppCompatActivity implements LoaderCallbacks
 
     private static final int REQUEST_READ_CONTACTS = 0;
 
-
     /**
      * Keep track of the login task to ensure we can cancel it if requested.
      */
@@ -143,7 +142,6 @@ public class SignupActivity extends AppCompatActivity implements LoaderCallbacks
         }
     }
 
-
     /**
      * Attempts to sign in or register the account specified by the login form.
      * If there are form errors (invalid email, missing fields, etc.), the
@@ -202,7 +200,7 @@ public class SignupActivity extends AppCompatActivity implements LoaderCallbacks
             user.setUsername(username);
             user.setPassword(password);
             user.setEmail(email);
-            user.put("credit",100);
+            user.put("credit", 100);
 
             user.signUpInBackground(new SignUpCallback() {
                 public void done(ParseException e) {
@@ -218,6 +216,8 @@ public class SignupActivity extends AppCompatActivity implements LoaderCallbacks
                         // to figure out what went wrong
                         System.out.println(e.toString());
                         Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_LONG).show();
+                        showProgress(false);
+
                     }
                 }
             });

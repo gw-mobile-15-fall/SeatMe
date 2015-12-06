@@ -3,6 +3,7 @@ package com.seatme.gwu.seatme.util;
 import android.graphics.Bitmap;
 
 import com.google.gson.JsonObject;
+import com.parse.ParseUser;
 import com.seatme.gwu.seatme.Constants;
 
 import java.io.File;
@@ -42,7 +43,7 @@ public class Util {
         return true;
     }
 
-    public static URL parseJsonFromS3(JsonObject jsonObject) throws Exception{
+        public static URL parseJsonFromS3(JsonObject jsonObject) throws Exception{
 
         boolean result = jsonObject.get("result").getAsBoolean();
         String imageUrl;
@@ -55,4 +56,18 @@ public class Util {
             return null;
 
     }
+
+
+    public static ParseUser getCurrentUser(){
+
+        ParseUser currentUser = ParseUser.getCurrentUser();
+        if (currentUser != null) {
+            return currentUser;
+        } else {
+            // show the signup or login screen
+            return null;
+        }
+    }
+
+
 }
