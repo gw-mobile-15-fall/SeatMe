@@ -9,6 +9,7 @@ public class Constants {
     public static final String GOOGLE_API_KEY = "AIzaSyBrTk5OlTPRSmPyDzzlO1wXqSIWWYxfuDI";
     public static final String ACTION = "ACTION";
     public static final String PLACE = "PLACE";
+    public static final String ROOM = "ROOM";
 
     public static final String NAME = "NAME";
     public static final String FULLNESS = "FULLNESS";

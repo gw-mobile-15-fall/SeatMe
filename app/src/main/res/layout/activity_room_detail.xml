@@ -115,5 +115,11 @@ tools:context="com.seatme.gwu.seatme.activity.RoomDetailActivity">
         android:layout_marginTop="10dp"
         android:layout_weight="1"/>
 
+    <Button
+        android:id="@+id/history_button"
+        android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:textSize="15sp"
+        android:textColor="#000000"
+        android:text="@string/detail_history"/>
 
 </LinearLayout>

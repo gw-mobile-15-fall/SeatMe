@@ -74,6 +74,8 @@
         </activity>
         <activity android:name=".activity.RoomDetailActivity" >
         </activity>
+        <activity android:name=".activity.HistoryActivity" >
+        </activity>
     </application>
 
 </manifest>

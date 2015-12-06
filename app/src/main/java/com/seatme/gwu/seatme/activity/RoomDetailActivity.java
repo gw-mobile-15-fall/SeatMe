@@ -1,16 +1,20 @@
 package com.seatme.gwu.seatme.activity;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
 import android.widget.AbsListView;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
+import com.seatme.gwu.seatme.Constants;
 import com.seatme.gwu.seatme.PersistanceManager;
 import com.seatme.gwu.seatme.R;
 import com.seatme.gwu.seatme.model.Room;
@@ -36,19 +40,29 @@ public class RoomDetailActivity extends AppCompatActivity {
     private TextView mSeatnumbnerView;
     private TextView mDescriptionView;
     private ImageView mImageView;
+    private Button mHistoryButton;
 
     private PersistanceManager mPersistanceManager;
     private Room r;
+    private String mPlace;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_room_detail);
 
+        Bundle Title = getIntent().getExtras();
+        if (Title != null) {
+            mPlace = Title.getString(Constants.PLACE);
+        }
+
+
+
         mRoomNameView = (TextView) findViewById(R.id.detail_roomname);
         mSeatnumbnerView = (TextView) findViewById(R.id.detail_seatnumber);
         mDescriptionView = (TextView) findViewById(R.id.detail_description);
         mImageView = (ImageView) findViewById(R.id.detailed_image);
+        mHistoryButton = (Button) findViewById(R.id.history_button);
 
         mPersistanceManager = new PersistanceManager(this);
         r = mPersistanceManager.getCurrentRoom();
@@ -64,7 +78,7 @@ public class RoomDetailActivity extends AppCompatActivity {
         mRenderer.setApplyBackgroundColor(true);
         mRenderer.setBackgroundColor(Color.argb(100, 50, 50, 50));
         mRenderer.setChartTitleTextSize(20);
-        mRenderer.setLabelsTextSize(45);
+        mRenderer.setLabelsTextSize(40);
         mRenderer.setShowLegend(false);
 
 //        mRenderer.setMargins(new int[]{20, 30, 15, 0 });
@@ -103,6 +117,18 @@ public class RoomDetailActivity extends AppCompatActivity {
                 }
             }
         });
+
+        mHistoryButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getBaseContext(), HistoryActivity.class);
+                intent.putExtra(Constants.ROOM, r.getName());
+                intent.putExtra(Constants.PLACE, mPlace);
+                startActivity(intent);
+            }
+        });
+
+
     }
 
 }
