@@ -1,7 +1,10 @@
 package com.seatme.gwu.seatme.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.firebase.client.DataSnapshot;
@@ -9,6 +12,7 @@ import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 import com.seatme.gwu.seatme.Constants;
+import com.seatme.gwu.seatme.PersistanceManager;
 import com.seatme.gwu.seatme.R;
 import com.seatme.gwu.seatme.model.Room;
 import com.seatme.gwu.seatme.util.RoomListAdapter;
@@ -23,6 +27,7 @@ public class CheckRoomActivity extends AppCompatActivity {
 
     private String mPlace;
     private ArrayList<Room> mRooms;
+    private PersistanceManager mPersistanceManager;
 
 
     @Override
@@ -33,6 +38,7 @@ public class CheckRoomActivity extends AppCompatActivity {
         mRooms = new ArrayList<Room>();
 
         Firebase.setAndroidContext(this);
+        mPersistanceManager = new PersistanceManager(this);
 
         Bundle Title = getIntent().getExtras();
         if (Title != null) {
@@ -41,9 +47,15 @@ public class CheckRoomActivity extends AppCompatActivity {
 
         Firebase myFirebaseRef = new Firebase("https://seatmegwu.firebaseio.com/");
 
-        System.out.println(mPlace);
+        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            public void onItemClick(AdapterView<?> list, View v, int pos, long id) {
 
-
+                Room r = (Room) list.getItemAtPosition(pos);
+                mPersistanceManager.saveRoom(r);
+                Intent intent = new Intent(getBaseContext(), RoomDetailActivity.class);
+                startActivity(intent);
+            }
+        });
 
         myFirebaseRef.child(mPlace).addValueEventListener(new ValueEventListener() {
             @Override

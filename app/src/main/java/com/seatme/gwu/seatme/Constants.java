@@ -10,6 +10,13 @@ public class Constants {
     public static final String ACTION = "ACTION";
     public static final String PLACE = "PLACE";
 
+    public static final String NAME = "NAME";
+    public static final String FULLNESS = "FULLNESS";
+    public static final String NUMBEROFSEAT= "NUMBEROFSEAT";
+    public static final String TIME= "TIME";
+    public static final String DESCRIPTION= "DESCRIPTION";
+    public static final String IMAGE= "IMAGE";
+
 
     public static final String IMAGE_FILE_NAME = "SEATME_IMAGE.jpg";
 

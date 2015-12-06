@@ -1,5 +1,12 @@
 apply plugin: 'com.android.application'
 
+repositories {
+    mavenCentral()
+    maven {
+        url "https://repository-achartengine.forge.cloudbees.com/snapshot/"
+    }
+}
+
 android {
     compileSdkVersion 23
     buildToolsVersion "23.0.1"
@@ -22,6 +29,7 @@ android {
         exclude 'META-INF/LICENSE-FIREBASE.txt'
         exclude 'META-INF/NOTICE'
     }
+
 }
 
 dependencies {
@@ -36,4 +44,5 @@ dependencies {
     compile 'com.firebase:firebase-client-android:2.4.0+'
     compile 'com.koushikdutta.ion:ion:2.+'
     compile 'com.google.code.gson:gson:2.3'
+    compile group: 'org.achartengine', name: 'achartengine', version: '1.2.0'
 }
