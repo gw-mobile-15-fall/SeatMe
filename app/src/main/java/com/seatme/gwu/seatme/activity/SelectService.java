@@ -27,6 +27,7 @@ public class SelectService extends AppCompatActivity {
     private ImageButton mReward;
     private ImageButton mProfile;
     private ParseUser user;
+    private Menu menu;
 
 
     @Override
@@ -50,15 +51,15 @@ public class SelectService extends AppCompatActivity {
             }
         });
 
-        mPlaceSeat.setOnClickListener(new View.OnClickListener(){
+        mPlaceSeat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //Toast.makeText(getBaseContext(), "You are already here, please pick services@", Toast.LENGTH_LONG).show();
-                if(Util.getCurrentUser()==null){
+                if (Util.getCurrentUser() == null) {
                     Toast.makeText(getBaseContext(), R.string.NOTIFICATION_REQUIRELOGIN, Toast.LENGTH_LONG).show();
                     Intent intent = new Intent(getBaseContext(), LoginActivity.class);
                     startActivity(intent);
-                }else {
+                } else {
                     Intent intent = new Intent(getBaseContext(), SearchMapsActivity.class);
                     intent.putExtra(Constants.ACTION, "Room");
                     startActivity(intent);
@@ -67,7 +68,7 @@ public class SelectService extends AppCompatActivity {
             }
         });
 
-        mHome.setOnClickListener(new View.OnClickListener(){
+        mHome.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Toast.makeText(getBaseContext(), "You are already here, please pick services@", Toast.LENGTH_LONG).show();
@@ -83,16 +84,16 @@ public class SelectService extends AppCompatActivity {
             }
         });
 
-        mPlaceShotCut.setOnClickListener(new View.OnClickListener(){
+        mPlaceShotCut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                if(Util.getCurrentUser()==null){
-                   // Toast.makeText(getBaseContext(), "You are already here, please pick services@", Toast.LENGTH_LONG).show();
+                if (Util.getCurrentUser() == null) {
+                    // Toast.makeText(getBaseContext(), "You are already here, please pick services@", Toast.LENGTH_LONG).show();
                     Toast.makeText(getBaseContext(), R.string.NOTIFICATION_REQUIRELOGIN, Toast.LENGTH_LONG).show();
                     Intent intent = new Intent(getBaseContext(), LoginActivity.class);
                     startActivity(intent);
-                }else {
+                } else {
                     Intent intent = new Intent(getBaseContext(), SearchMapsActivity.class);
                     intent.putExtra(Constants.ACTION, "Room");
                     startActivity(intent);
@@ -100,7 +101,7 @@ public class SelectService extends AppCompatActivity {
 
             }
         });
-        mReward.setOnClickListener(new View.OnClickListener(){
+        mReward.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getBaseContext(), RewardActivity.class);
@@ -108,7 +109,7 @@ public class SelectService extends AppCompatActivity {
             }
         });
 
-        mProfile.setOnClickListener(new View.OnClickListener(){
+        mProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getBaseContext(), ProfileActivity.class);
@@ -121,6 +122,23 @@ public class SelectService extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
+        this.menu = menu;
+
+        return true;
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        super.onPrepareOptionsMenu(menu);
+
+        user = ParseUser.getCurrentUser();
+        MenuItem logItem = menu.findItem(R.id.logOption);
+        // if guest user, ask them to signin or signup
+        if (user == null) {
+            logItem.setTitle(R.string.login);
+        } else {
+            logItem.setTitle(R.string.logout);
+        }
         return true;
     }
 
@@ -132,21 +150,24 @@ public class SelectService extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.logout) {
+        if (id == R.id.logOption) {
             user = ParseUser.getCurrentUser();
+            MenuItem logItem = menu.findItem(R.id.logOption);
             // if guest user, ask them to signin or signup
-            if(user==null){
-                Toast.makeText(this,"You are guest user",Toast.LENGTH_SHORT).show();
-            }
-            else {
+            if (user == null) {
+                //Toast.makeText(this, "You are guest user", Toast.LENGTH_SHORT).show();
+            } else {
                 user.logOut();
-                Toast.makeText(this,"logout succeed",Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(getBaseContext(), LoginActivity.class);
-                startActivity(intent);
+                Toast.makeText(this, "logout succeed", Toast.LENGTH_SHORT).show();
             }
 
+            Intent intent = new Intent(getBaseContext(), LoginActivity.class);
+            startActivity(intent);
             return true;
         }
-        return super.onOptionsItemSelected(item);
+
+        return super.
+
+                onOptionsItemSelected(item);
     }
 }
