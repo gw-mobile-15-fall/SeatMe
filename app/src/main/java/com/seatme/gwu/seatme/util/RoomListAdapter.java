@@ -39,7 +39,7 @@ public class RoomListAdapter extends ArrayAdapter<Room> {
         TextView roomTime = (TextView) rowView.findViewById(R.id.room_time);
 
         roomName.setText(room.getName());
-        roomFullness.setText(room.getFullness());
+        roomFullness.setText(room.getFullness()+"%");
         roomNumberOfSeat.setText(room.getNumberOfSeat());
         roomTime.setText(room.getTime());
 

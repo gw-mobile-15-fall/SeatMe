@@ -134,9 +134,9 @@ public class HistoryActivity extends AppCompatActivity {
                 System.out.println("There are " + snapshot.getChildrenCount() + "  posts");
                 for (DataSnapshot postSnapshot : snapshot.getChildren()) {
                     Room room = postSnapshot.getValue(Room.class);
-                    System.out.println(room.getName());
                     mRooms.add(room);
                 }
+                //in order to show the data order by updated time, just reverse the items from firebase, small trick..
                 Collections.reverse(mRooms);
                 changeAdapter();
             }
