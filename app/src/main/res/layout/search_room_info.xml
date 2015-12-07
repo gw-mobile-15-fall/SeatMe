@@ -68,7 +68,7 @@
         android:paddingRight="4dp"
         android:paddingLeft="4dp"
         android:layout_weight="1"
-        android:text="@string/time"
+        android:text="@string/update_at"
         />
     </LinearLayout>
 
