@@ -50,7 +50,6 @@ public class PushInformationActivity extends AppCompatActivity {
 
     private static final int CAMERA_REQUEST = 1337;
 
-
     private TextView mFullnessView;
     private EditText mSeatnumbnerView;
     private Button mSubmitButton;
@@ -81,8 +80,10 @@ public class PushInformationActivity extends AppCompatActivity {
             System.out.println(mAction);
             System.out.println(mPlace);
         }
-        //TODO: if Title != null solution needed.
         else mPlace = "Gelman Lib";
+
+
+
         setContentView(R.layout.activity_push_information);
         mSpinner = (Spinner)findViewById(R.id.push_information_spinner_room);
         mFullnessSeekBar = (SeekBar) findViewById(R.id.push_information_seekbar_fullness);

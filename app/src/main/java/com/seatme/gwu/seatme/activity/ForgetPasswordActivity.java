@@ -35,7 +35,9 @@ import java.util.List;
 import static android.Manifest.permission.READ_CONTACTS;
 
 /**
- * A login screen that offers login via email/password.
+ * Created by Huanzhou on 11/19/2015.
+ *
+ * ForgetPasswordActivity allows users to reset their password by send a password resting request to Parse, in which user can receive a password-rest email.
  */
 public class ForgetPasswordActivity extends AppCompatActivity implements LoaderCallbacks<Cursor> {
 
@@ -43,15 +45,6 @@ public class ForgetPasswordActivity extends AppCompatActivity implements LoaderC
      * Id to identity READ_CONTACTS permission request.
      */
     private static final int REQUEST_READ_CONTACTS = 0;
-
-    /**
-     * A dummy authentication store containing known user names and passwords.
-     *
-     */
-
-    /**
-     * Keep track of the login task to ensure we can cancel it if requested.
-     */
 
     // UI references.
     private AutoCompleteTextView mEmailView;
@@ -64,15 +57,11 @@ public class ForgetPasswordActivity extends AppCompatActivity implements LoaderC
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_forget_password);
-        // Set up the login form.
+
+        // Set up the forget password form.
         mEmailView = (AutoCompleteTextView) findViewById(R.id.forgetpassword_form_email);
         populateAutoComplete();
-
         mForgetPasswordButton = (Button) findViewById(R.id.forgetpassword_form_button);
-
-        System.out.println(mForgetPasswordButton.toString());
-
-
 
         mForgetPasswordButton.setOnClickListener(new OnClickListener() {
             @Override
@@ -89,10 +78,12 @@ public class ForgetPasswordActivity extends AppCompatActivity implements LoaderC
         if (!mayRequestContacts()) {
             return;
         }
-
         getLoaderManager().initLoader(0, null, this);
     }
 
+    /**
+     * Try to get contacts.
+     */
     private boolean mayRequestContacts() {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
             return true;
@@ -130,16 +121,16 @@ public class ForgetPasswordActivity extends AppCompatActivity implements LoaderC
 
 
     /**
-     * Attempts to sign in or register the account specified by the login form.
-     * If there are form errors (invalid email, missing fields, etc.), the
-     * errors are presented and no actual login attempt is made.
+     * Attempts to request parse reset password function when getting user's email
+     * If there are form errors (invalid email), the
+     * errors are presented and no actual reset password attempt is made.
      */
     private void attemptForgetPassword() {
 
         // Reset errors.
         mEmailView.setError(null);
 
-        // Store values at the time of the login attempt.
+        // Store values at the time of the action attempt.
         String email = mEmailView.getText().toString();
 
         boolean cancel = false;
@@ -161,30 +152,27 @@ public class ForgetPasswordActivity extends AppCompatActivity implements LoaderC
                 if (e == null) {
                     // An email was successfully sent with reset instructions.
                     Toast.makeText(getApplicationContext(), R.string.notification_forgetpassword_success, Toast.LENGTH_LONG).show();
-
                     Intent intent = new Intent(getBaseContext(), LoginActivity.class);
                     startActivity(intent);
-
                 } else {
-                    // Something went wrong. Look at the ParseException to see what's up.
-                    Toast.makeText(getApplicationContext(),e.toString(), Toast.LENGTH_LONG).show();
+                    // Something went wrong. Send a error notification toast to user.
+                    Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_LONG).show();
                 }
             }
         });
 
 
         if (cancel) {
-            // There was an error; don't attempt login and focus the first
+            // There was an error; don't attempt reset password and focus the first
             // form field with an error.
             focusView.requestFocus();
         } else {
             // Show a progress spinner, and kick off a background task to
-            // perform the user login attempt.
+            // perform the user reset password attempt.
             showProgress(true);
 
         }
     }
-
 
 
     private boolean isEmailValid(String email) {
@@ -194,7 +182,7 @@ public class ForgetPasswordActivity extends AppCompatActivity implements LoaderC
 
 
     /**
-     * Shows the progress UI and hides the login form.
+     * Shows the progress UI and hides the form.
      */
     @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
     private void showProgress(final boolean show) {

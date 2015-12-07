@@ -15,16 +15,11 @@
     <string name="title_activity_push_information">Push Information</string>
 
     <!-- Strings related to signup -->
-
     <string name="login">Login</string>
     <string name="sign_up">Sign Up</string>
-
     <string name="sign_up_success">Sign Up Success</string>
-
-
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Password</string>
-
     <string name="prompt_username">Username</string>
 
     <string name="action_sign_up">Register</string>
@@ -46,20 +41,14 @@
     <string name="action_sign_in_short">Sign in</string>
 
     <string name="action_submit">submit</string>
-
-
     <string name="prompt_room">Room</string>
     <string name="prompt_fullness">Fullness</string>
     <string name="prompt_seatnumber">Number of seat</string>
     <string name="prompt_description">Description</string>
     <string name="default_percentage">0/100</string>
-
     <string name="action_picture">take a picture</string>
     <string name="time">Time</string>
-
-
     <string name="notification_forgetpassword_success">An email has sent, please check </string>
-
     <string name="title_activity_search_maps">Map</string>
     <string name="place_details">&lt;b&gt;%1$s&lt;/b&gt;&lt;br/&gt;&lt;i&gt;Place Id: %2$s&lt;/i&gt;&lt;br/&gt;Address: %3$s&lt;br/&gt;Phone: %4$s&lt;br/&gt;Website: %5$s</string>
     <string name="clear_text">Clear</string>
@@ -76,7 +65,6 @@
     <string name="redeem">Redeem your points</string>
     <string name="title_activity_forget_password">ForgetPassword</string>
     <string name="forget_password">Forget Password</string>
-
 
     <string name="change_username">rename</string>
     <string name="current_credit">current credit: </string>
@@ -97,8 +85,14 @@
     <string name="NOTIFICATION_REQUIRELOGIN">Please Login in</string>
     <string name="Occupied">Occupied</string>
     <string name="Vacant">Vacant</string>
-
+    <string name="search_room_info">Study rooms in this building:</string>
     <string name="back_home">Home</string>
+    <string name="show_username">User Name: </string>
+
+
+
+    <string name="profile_requirelogin">Please login or signup to view!</string>
+
 
 
 </resources>

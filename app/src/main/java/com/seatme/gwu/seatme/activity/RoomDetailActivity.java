@@ -77,7 +77,7 @@ public class RoomDetailActivity extends AppCompatActivity {
         mRenderer.setApplyBackgroundColor(true);
         mRenderer.setBackgroundColor(Color.argb(100, 50, 50, 50));
         mRenderer.setChartTitleTextSize(20);
-        mRenderer.setLabelsTextSize(15);
+        mRenderer.setLabelsTextSize(50);
         mRenderer.setShowLegend(false);
         mRenderer.setShowTickMarks(false);
 

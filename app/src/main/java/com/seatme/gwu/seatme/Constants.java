@@ -19,8 +19,20 @@ public class Constants {
     public static final String IMAGE= "IMAGE";
     public static final String OCCUPIED = "Occupied";
     public static final String VACANT = "Vacant";
+    public static final String SHOW_USERNAME = "User Name: ";
+    public static final String SHOW_EMAIL= "Email: ";
+    public static final String NICKNAME = "NickName";
+    public static final String CREDIT = "credit";
+    public static final String PIC = "pic";
+    public static final String PICTURE_FILE = " Picture.jpg";
+
+
 
     public static final String IMAGE_FILE_NAME = "SEATME_IMAGE.jpg";
+    public static final String FIREBASE_SEATME = "https://seatmegwu.firebaseio.com/";
+
+
+
 
 
 }

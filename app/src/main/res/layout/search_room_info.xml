@@ -1,23 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout  xmlns:android="http://schemas.android.com/apk/res/android"
               android:orientation="vertical"
               android:layout_width="match_parent"
               android:layout_height="match_parent">
 
-
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:singleLine="true"
         android:textSize="20dp"
-        android:text="Study rooms in this building:"/>
+        android:text="@string/search_room_info"
+        android:layout_marginTop= "20dp"
+        android:layout_marginLeft="10dp"
+        />
 
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:layout_marginTop= "20dp"
+        android:layout_marginLeft="10dp"
+        android:weightSum="4">
 
     <TextView
         android:id="@+id/room_name"
@@ -26,8 +35,8 @@
         android:singleLine="true"
         android:paddingRight="4dp"
         android:paddingLeft="4dp"
-        android:minEms="7"
         android:text="@string/prompt_room"
+        android:layout_weight="1"
         />
     <TextView
         android:id="@+id/room_fullness"
@@ -36,6 +45,7 @@
         android:singleLine="true"
         android:paddingRight="4dp"
         android:paddingLeft="4dp"
+        android:layout_weight="1"
         android:text="@string/prompt_fullness"
         />
 
@@ -46,6 +56,7 @@
         android:singleLine="true"
         android:paddingRight="4dp"
         android:paddingLeft="4dp"
+        android:layout_weight="1"
         android:text="@string/prompt_seatnumber"
         />
 
@@ -56,14 +67,85 @@
         android:singleLine="true"
         android:paddingRight="4dp"
         android:paddingLeft="4dp"
+        android:layout_weight="1"
         android:text="@string/time"
         />
     </LinearLayout>
 
+
     <ListView
         android:id="@+id/room_list"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingTop="10dp"
+        android:weightSum="1"
+        android:layout_marginLeft="10dp"
         />
-</LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_gravity="bottom">
+        <ImageButton
+            android:id="@+id/home"
+            android:layout_width="85dp"
+            android:layout_height="60dp"
+            android:src="@drawable/home"
+            android:layout_alignParentLeft="true"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="-3dp"
+            android:layout_marginRight="-10dp"
+            android:scaleType="fitCenter"
+            android:layout_weight=".25"
+            />
+        <ImageButton
+            android:id="@+id/search_button"
+            android:layout_width="85dp"
+            android:layout_height="60dp"
+            android:layout_weight=".25"
+            android:src="@drawable/search"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="-10dp"
+            android:scaleType="fitCenter"
+            android:layout_toRightOf="@id/home"
+            />
+        <ImageButton
+            android:id="@+id/place_button"
+            android:layout_width="85dp"
+            android:layout_height="60dp"
+            android:src="@drawable/placeloc"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="-10dp"
+            android:scaleType="fitCenter"
+            android:layout_toRightOf="@id/search_button"
+            android:layout_weight=".25"
+            />
+        <ImageButton
+            android:id="@+id/reward"
+            android:layout_width="85dp"
+            android:layout_height="60dp"
+            android:src="@drawable/reward"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="-10dp"
+            android:scaleType="fitCenter"
+            android:layout_toRightOf="@id/place_button"
+            android:layout_weight=".25"
+            />
+        <ImageButton
+            android:id="@+id/profile"
+            android:layout_width="85dp"
+            android:layout_height="60dp"
+            android:src="@drawable/profile"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="-10dp"
+            android:scaleType="fitCenter"
+            android:layout_toRightOf="@id/reward"
+            android:layout_weight=".25"
+            />
+
+    </LinearLayout>
+
+</FrameLayout >
