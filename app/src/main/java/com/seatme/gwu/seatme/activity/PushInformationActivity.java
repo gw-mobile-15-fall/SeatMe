@@ -44,6 +44,14 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Created by Huanzhou on 11/19/2015.
+ *
+ * PushInformationActivity allows users to share their room information and upload data to the firebase. A form will be displayed to user, letting them to fill in room's information
+ * including room name, number of seat, fullness and description. Additionally, user can take picture to show the room's situation, which will be upload to an Amazon S3 bucket using a
+ * EC2 server based on nodejs we created. All the rooms that user can select to push information are all retrieved from firebase which we have created. Therefore we can control and
+ * manage the rooms by adding or changing in firebase.
+ */
 public class PushInformationActivity extends AppCompatActivity {
 
     private final String TAG = "PushInformationActivity";
@@ -73,16 +81,13 @@ public class PushInformationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         Firebase.setAndroidContext(this);
 
+        //get room name and building name using extras, which will be used as parameters in firebase.
         Bundle Title = getIntent().getExtras();
         if (Title != null) {
             mAction = Title.getString(Constants.ACTION);
             mPlace = Title.getString(Constants.PLACE);
-            System.out.println(mAction);
-            System.out.println(mPlace);
         }
-        else mPlace = "Gelman Lib";
-
-
+        else mPlace = Constants.LIBRARY;
 
         setContentView(R.layout.activity_push_information);
         mSpinner = (Spinner)findViewById(R.id.push_information_spinner_room);
@@ -97,19 +102,17 @@ public class PushInformationActivity extends AppCompatActivity {
 
         mImageProgressBar.setProgress(0);
 
-        Firebase myFirebaseRef = new Firebase("https://seatmegwu.firebaseio.com/").child("RoomInfo").child(mPlace);
+        //retrieve all the rooms in this building from firebase and then change the Spinner
+        Firebase myFirebaseRef = new Firebase(Constants.FIREBASE_SEATME).child(Constants.ROOMINFO).child(mPlace);
 
         myFirebaseRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
                 arraySpinner = new ArrayList<String>();
-                System.out.println("There are " + snapshot.getChildrenCount() + "  posts");
                 for (DataSnapshot postSnapshot : snapshot.getChildren()) {
                     RoomInfo roomInfo = postSnapshot.getValue(RoomInfo.class);
                     arraySpinner.add(roomInfo.getRoom());
                 }
-
-                System.out.println(arraySpinner.indexOf(0));
                 changeSpinner();
             }
 
@@ -132,9 +135,6 @@ public class PushInformationActivity extends AppCompatActivity {
 
                     @Override
                     public void onStartTrackingTouch(SeekBar seekBar) {
-                        // Do something here,
-                        //if you want to do anything at the start of
-                        // touching the seekbar
                     }
 
                     @Override
@@ -147,7 +147,6 @@ public class PushInformationActivity extends AppCompatActivity {
         mSubmitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                System.out.println("push data");
 
                 ParseUser user = ParseUser.getCurrentUser();
                 if(user==null){
@@ -155,38 +154,36 @@ public class PushInformationActivity extends AppCompatActivity {
                     Intent intent = new Intent(getBaseContext(), LoginActivity.class);
                     startActivity(intent);
                 }else {
-                    attemptPushData(mPlace);
-                    user.increment("credit", 100);
-                    try {
-                        user.save();
-                    } catch (ParseException e) {
-                        e.printStackTrace();
-                    }
-                    Intent intent = new Intent(getBaseContext(), SelectService.class);
-                    startActivity(intent);
+                   if(attemptPushData(mPlace)) {
+                       //increase user's credit
+                       user.increment(Constants.CREDIT, 100);
+                       try {
+                           user.save();
+                       } catch (ParseException e) {
+                           e.printStackTrace();
+                           Log.e(TAG, e.toString());
+                       }
+                       Intent intent = new Intent(getBaseContext(), SelectService.class);
+                       startActivity(intent);
+                   }
                 }
             }
         });
 
-
+        //start using camera
         mPictureButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                startActivityForResult(cameraIntent,CAMERA_REQUEST);
-                System.out.println("picture");
+                startActivityForResult(cameraIntent, CAMERA_REQUEST);
             }
         });
     }
 
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-        Firebase.goOffline();
-    }
-
+    /**
+     * After taking picture using camera, try to read the image and update to AWS S3
+     */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data){
         if(requestCode == CAMERA_REQUEST && resultCode == RESULT_OK){
@@ -199,11 +196,20 @@ public class PushInformationActivity extends AppCompatActivity {
                 File imageFile = openImage();
             }
 
+            //print in log to show error
             if(imageSaved == false){
                 Log.e(TAG, "Problem saving image");
             }
         }
-        //finish();
+    }
+
+    /**
+     * when onPause, disconnect the firebase connection to save energy and traffic load.
+     */
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Firebase.goOffline();
     }
 
     @Override
@@ -220,9 +226,11 @@ public class PushInformationActivity extends AppCompatActivity {
 
             File imageFile = openImage();
 
+            //After using camera, try to upload image to AWS S3 Bucket using Ion library to send http post Rest call to our AWS nodejs EC2 server.
+            //mS3ImageFlag is to prevent from uploading to S3 several times.
             if (mS3ImageFlag == false && imageFile.exists()) {
                 Ion.with(this)
-                        .load("http://52.25.82.212:8080/picture/m_upload_image")
+                        .load(Constants.S3_SERVER)
                         .uploadProgressBar(mImageProgressBar)
                         .uploadProgressHandler(new ProgressCallback() {
                             @Override
@@ -274,40 +282,41 @@ public class PushInformationActivity extends AppCompatActivity {
         mSpinner.setAdapter(adapter);
     }
 
-    private void attemptPushData(String room) {
+    /**
+     * Get data from form which user fill in, then upload them into firebase.
+     */
+    private boolean attemptPushData(String room) {
 
         String roomName = mSpinner.getSelectedItem().toString();
         String fullness = Integer.toString(mFullnessValue);
         String seatnumber = mSeatnumbnerView.getText().toString();
         String description =mDescriptionView.getText().toString();
 
-        System.out.println("fullness "+ fullness);
-        System.out.println("seatnumber "+ seatnumber);
-
         if (TextUtils.isEmpty(fullness) || TextUtils.isEmpty(seatnumber) ) {
-            System.out.println("empty input");
-            return;
+            Toast.makeText(getApplicationContext(), R.string.Notification_fill_in_form, Toast.LENGTH_LONG).show();
+            return false;
         }
 
-        Firebase myFirebaseRef = new Firebase("https://seatmegwu.firebaseio.com/").child(room).child(roomName);
+        Firebase myFirebaseRef = new Firebase(Constants.FIREBASE_SEATME).child(room).child(roomName);
 
         Map<String, String> post = new HashMap<String, String>();
-        post.put("name", roomName);
-        post.put("fullness", fullness);
-        post.put("numberOfSeat", seatnumber);
+        post.put(Constants.FIREBASE_ROOMNAME, roomName);
+        post.put(Constants.FIREBASE_FULLNESS, fullness);
+        post.put(Constants.FIREBASE_NUMBEROFSEAT, seatnumber);
 
+        //set date format
         DateFormat dateFormat = new SimpleDateFormat("hh:mm MM-dd");
         Date date = new Date();
         String time=dateFormat.format(date);
 
-        post.put("time", time);
-        post.put("description", description);
+        post.put(Constants.FIREBASE_TIME, time);
+        post.put(Constants.FIREBASE_DESCRIPTION, description);
         if(imageS3Url==null)
-            post.put("image", "");
-        else post.put("image", imageS3Url.toString());
+            post.put(Constants.FIREBASE_IMAGE, "");
+        else post.put(Constants.FIREBASE_IMAGE, imageS3Url.toString());
 
         myFirebaseRef.push().setValue(post);
-
+        return true;
     }
 
 }

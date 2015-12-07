@@ -12,8 +12,14 @@ import android.widget.Toast;
 
 import com.parse.ParseException;
 import com.parse.ParseUser;
+import com.seatme.gwu.seatme.Constants;
 import com.seatme.gwu.seatme.R;
 
+/**
+ * Created by Yan on 11/15/2015.
+ *
+ * Simple Reward system allowing user to use their credits to buy Starbucks or Movie tickets.
+ */
 public class RewardActivity extends AppCompatActivity {
     private TextView mCredit;
     private TextView mRedeemText;
@@ -45,9 +51,9 @@ public class RewardActivity extends AppCompatActivity {
             mClear.setVisibility(View.INVISIBLE);
             mSubmit.setVisibility(View.INVISIBLE);
             mRedeemText.setVisibility(View.INVISIBLE);
-            mHome.setText("Home");
+            mHome.setText(R.string.back_home);
 
-            mCredit.setText("Please login or signup to get reward!");
+            mCredit.setText(R.string.reward_requirelogin);
             mHome.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -61,7 +67,7 @@ public class RewardActivity extends AppCompatActivity {
         else {
             mHome.setVisibility(View.INVISIBLE);
 
-            credit = (int)user.getNumber("credit");
+            credit = (int)user.getNumber(Constants.CREDIT);
             mCredit.setText(mCredit.getText().toString() + credit);
 
             mRedeemChoice.clearCheck();
@@ -74,7 +80,7 @@ public class RewardActivity extends AppCompatActivity {
                             if (credit - 200 < 0) {
                                 isRedeemable = false;
                                 if (!isClear) {
-                                    Toast.makeText(getBaseContext(), "Not enough credit", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getBaseContext(), R.string.not_enough_credit, Toast.LENGTH_SHORT).show();
                                 }
                                 else isClear = false;
 
@@ -83,7 +89,7 @@ public class RewardActivity extends AppCompatActivity {
                             if (credit - 1000 < 0) {
                                 isRedeemable = false;
                                 if (!isClear) {
-                                    Toast.makeText(getBaseContext(), "Not enough credit", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getBaseContext(), R.string.not_enough_credit, Toast.LENGTH_SHORT).show();
                                 }
                                 else isClear = false;
                             } else isRedeemable = true;
@@ -99,27 +105,28 @@ public class RewardActivity extends AppCompatActivity {
                 }
             });
 
+            //decrease user's credits when user use them to get specific item.
             mSubmit.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
 
                     if (isRedeemable) {
                         if (mRedeemChoice.getCheckedRadioButtonId() == R.id.radio_starbuck) {
-                            user.increment("credit", -200);
+                            user.increment(Constants.CREDIT, -200);
                             credit -= 200;
                         } else {
-                            user.increment("credit", -1000);
+                            user.increment(Constants.CREDIT, -1000);
                             credit -= 1000;
                         }
-                        mCredit.setText("You current credits:" + credit);
+                        mCredit.setText(R.string.you_current_credit + credit);
                         try {
                             user.save();
                         } catch (ParseException e) {
                             e.printStackTrace();
                         }
-                        Toast.makeText(getBaseContext(), "Redeem succeed! Thank you for help the community!", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getBaseContext(), R.string.redeem_succeed, Toast.LENGTH_LONG).show();
                     } else
-                        Toast.makeText(getBaseContext(), "Share more info to get rewards! Thank you for help the community!",Toast.LENGTH_LONG).show();
+                        Toast.makeText(getBaseContext(), R.string.thankyou,Toast.LENGTH_LONG).show();
                     isClear = true;
                     mRedeemChoice.clearCheck();
 

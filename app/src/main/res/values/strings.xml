@@ -89,6 +89,14 @@
     <string name="back_home">Home</string>
     <string name="show_username">User Name: </string>
 
+    <string name="Notification_fill_in_form">Please fill in the form!</string>
+    <string name="reward_requirelogin">Please login or signup to get reward!</string>
+    <string name="not_enough_credit">Not enough credit</string>
+
+    <string name="you_current_credit">You current credits:</string>
+    <string name="redeem_succeed">Redeem succeed! Thank you for help the community!</string>
+    <string name="thankyou">Share more info to get rewards! Thank you for help the community!</string>
+
 
 
     <string name="profile_requirelogin">Please login or signup to view!</string>

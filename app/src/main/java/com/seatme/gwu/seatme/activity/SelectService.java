@@ -17,6 +17,9 @@ import com.seatme.gwu.seatme.util.Util;
 
 /**
  * Created by Yan on 11/1/2015.
+ *
+ * Provides two buttons to let users choose which service to use, either to find a seat or share room information. Sharing room information requires user has a login state, if user
+ * haven't login or the session has expired, it will redirect to login page.
  */
 public class SelectService extends AppCompatActivity {
     private Button mSearchSeat;
@@ -51,10 +54,10 @@ public class SelectService extends AppCompatActivity {
             }
         });
 
+        //check the session state, if user do not login or session has expired, redirect to login page.
         mPlaceSeat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Toast.makeText(getBaseContext(), "You are already here, please pick services@", Toast.LENGTH_LONG).show();
                 if (Util.getCurrentUser() == null) {
                     Toast.makeText(getBaseContext(), R.string.NOTIFICATION_REQUIRELOGIN, Toast.LENGTH_LONG).show();
                     Intent intent = new Intent(getBaseContext(), LoginActivity.class);
@@ -71,7 +74,6 @@ public class SelectService extends AppCompatActivity {
         mHome.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getBaseContext(), "You are already here, please pick services@", Toast.LENGTH_LONG).show();
             }
         });
 
@@ -89,7 +91,6 @@ public class SelectService extends AppCompatActivity {
             public void onClick(View v) {
 
                 if (Util.getCurrentUser() == null) {
-                    // Toast.makeText(getBaseContext(), "You are already here, please pick services@", Toast.LENGTH_LONG).show();
                     Toast.makeText(getBaseContext(), R.string.NOTIFICATION_REQUIRELOGIN, Toast.LENGTH_LONG).show();
                     Intent intent = new Intent(getBaseContext(), LoginActivity.class);
                     startActivity(intent);
@@ -153,9 +154,7 @@ public class SelectService extends AppCompatActivity {
         if (id == R.id.logOption) {
             user = ParseUser.getCurrentUser();
             MenuItem logItem = menu.findItem(R.id.logOption);
-            // if guest user, ask them to signin or signup
             if (user == null) {
-                //Toast.makeText(this, "You are guest user", Toast.LENGTH_SHORT).show();
             } else {
                 user.logOut();
                 Toast.makeText(this, "logout succeed", Toast.LENGTH_SHORT).show();

@@ -25,12 +25,31 @@ public class Constants {
     public static final String CREDIT = "credit";
     public static final String PIC = "pic";
     public static final String PICTURE_FILE = " Picture.jpg";
+    public static final String ROOMINFO = "RoomInfo";
+
+    public static final String FIREBASE_ROOMNAME = "name";
+    public static final String FIREBASE_FULLNESS = "fullness";
+    public static final String FIREBASE_NUMBEROFSEAT = "numberOfSeat";
+    public static final String FIREBASE_TIME = "time";
+    public static final String FIREBASE_DESCRIPTION = "description";
+    public static final String FIREBASE_IMAGE = "image";
+
+
+
+
+    public static final String LIBRARY = "Gelman Lib, click me";
+    public static final String SEH = "SEH, click me";
+    public static final String Tompkins = "Tompkins, click me";
+    public static final String RomeHall = "Rome Hall, click me";
 
 
 
     public static final String IMAGE_FILE_NAME = "SEATME_IMAGE.jpg";
     public static final String FIREBASE_SEATME = "https://seatmegwu.firebaseio.com/";
 
+    public static final String S3_SERVER = "http://52.25.82.212:8080/picture/m_upload_image";
+
+    public static final String GOOGLEMAP_API_URL= "https://maps.googleapis.com/maps/api/geocode/json?";
 
 
 

@@ -222,10 +222,6 @@ public class SignupActivity extends AppCompatActivity implements LoaderCallbacks
                 }
             });
 
-
-            //UserSignupAsyncTask UserSignupTask = new UserSignupAsyncTask(this, this);
-            //UserSignupTask.execute(email,password);
-
         }
     }
 

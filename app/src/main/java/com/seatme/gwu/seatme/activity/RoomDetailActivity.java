@@ -26,7 +26,12 @@ import org.achartengine.model.CategorySeries;
 import org.achartengine.renderer.DefaultRenderer;
 import org.achartengine.renderer.SimpleSeriesRenderer;
 
-
+/**
+ * Created by Huanzhou on 11/15/2015.
+ *
+ * In RoomDetailActivity, user is able to get detailed room information for one record shared by other users, including room name, number of seat, a pie chart which
+ * shows the fullness percentage using achartengine library, description and a photo. Users can also enter a list of recent records shared by other user by clicking show history.
+ */
 public class RoomDetailActivity extends AppCompatActivity {
 
     private final String TAG = "RoomDetailActivity";
@@ -70,6 +75,7 @@ public class RoomDetailActivity extends AppCompatActivity {
         mSeatnumbnerView.setText(r.getNumberOfSeat());
         mDescriptionView.setText(r.getDescription());
 
+        //set the achartengine pie chart parameters, including color, lable size as well as items shown options
         double taken = Double.parseDouble(r.getFullness());
         double notTaken = 100 - taken;
         double[] PIECHARTVALUES = new double[]{taken, notTaken};
@@ -80,11 +86,10 @@ public class RoomDetailActivity extends AppCompatActivity {
         mRenderer.setLabelsTextSize(50);
         mRenderer.setShowLegend(false);
         mRenderer.setShowTickMarks(false);
-
-//        mRenderer.setMargins(new int[]{20, 30, 15, 0 });
         mRenderer.setZoomButtonsVisible(true);
         mRenderer.setStartAngle(90);
 
+        //show the percentage
         for (int i = 0; i < PIECHARTVALUES.length; i++) {
             mSeries.add(NAME_LIST[i] + " " + PIECHARTVALUES[i] + "%", PIECHARTVALUES[i]);
             SimpleSeriesRenderer renderer = new SimpleSeriesRenderer();
@@ -96,6 +101,7 @@ public class RoomDetailActivity extends AppCompatActivity {
             mChartView.repaint();
         }
 
+        //load the pie chart layout with the parameters in mRenderer and mSeries we set before.
         LinearLayout layout = (LinearLayout) findViewById(R.id.chart);
         mChartView = ChartFactory.getPieChartView(this, mSeries, mRenderer);
         mRenderer.setClickEnabled(true);
@@ -111,7 +117,7 @@ public class RoomDetailActivity extends AppCompatActivity {
                         //yay
 
                     } else {
-                        //log the error information , helping to check. Then keep running app without weather icon
+                        //log the error information , helping to check. Then keep running app without image
                         Log.d(TAG, "image failed to load " + e.toString());
 
                     }
@@ -119,6 +125,7 @@ public class RoomDetailActivity extends AppCompatActivity {
             });
         }
 
+        //set the extre before going to history activity, helping to save which building and which room to load.
         mHistoryButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -129,12 +136,19 @@ public class RoomDetailActivity extends AppCompatActivity {
             }
         });
     }
+
+    /**
+     * when onPause, disconnect the firebase connection to save energy and traffic load.
+     */
     @Override
     protected void onPause() {
         super.onPause();
         Firebase.goOffline();
     }
 
+    /**
+     * when onResume, reconnect the firebase connection.
+     */
     @Override
     protected void onResume() {
         super.onResume();

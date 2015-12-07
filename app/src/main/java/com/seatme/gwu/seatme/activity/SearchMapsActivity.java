@@ -44,9 +44,16 @@ import com.seatme.gwu.seatme.util.GooglePlacesAutocompleteAdapter;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
+/**
+ * Created by Yan on 10/15/2015.
+ *
+ * SearchMapsActivity uses google map API to show a map and several pins on the screen, allowing user to select specific building and do either finding a seat or
+ * share room information in that building. Currently we provide four buildings including Gelman Library, SEH, Tompkins and Rome Hall. On the beginning screen will be located on
+ * the GWU school area, but you can find your current location on the map.
+ */
+
 public class SearchMapsActivity extends FragmentActivity implements GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,LocationListener{
-
 
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
     private GoogleApiClient mGoogleApiClient;
@@ -68,7 +75,6 @@ public class SearchMapsActivity extends FragmentActivity implements GoogleApiCli
     private ImageButton mReward;
     private ImageButton mProfile;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -80,8 +86,6 @@ public class SearchMapsActivity extends FragmentActivity implements GoogleApiCli
         }
 
         setUpMapIfNeeded();
-
-
 
         mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
             @Override
@@ -140,9 +144,9 @@ public class SearchMapsActivity extends FragmentActivity implements GoogleApiCli
         });
 
         CameraUpdate point = CameraUpdateFactory.newLatLng(new LatLng(38.900199, -77.050498));
-// moves camera to coordinates
+        // moves camera to coordinates
         mMap.moveCamera(point);
-// animates camera to coordinates
+        // animates camera to coordinates
         mMap.animateCamera(point);
 
         mHome = (ImageButton) findViewById(R.id.home);
@@ -234,24 +238,8 @@ public class SearchMapsActivity extends FragmentActivity implements GoogleApiCli
             }
             // Get the Room object from the buffer.
             final Place place = places.get(0);
-/*
-            // Format details of the place for display and show it in a TextView.
-            mPlaceDetailsText.setText(formatPlaceDetails(getResources(), place.getName(),
-                    place.getId(), place.getAddress(), place.getPhoneNumber(),
-                    place.getWebsiteUri()));
 
-            // Display the third party attributions if set.
-            final CharSequence thirdPartyAttribution = places.getAttributions();
-            if (thirdPartyAttribution == null) {
-                mPlaceDetailsAttribution.setVisibility(View.GONE);
-            } else {
-                mPlaceDetailsAttribution.setVisibility(View.VISIBLE);
-                mPlaceDetailsAttribution.setText(Html.fromHtml(thirdPartyAttribution.toString()));
-            }
-
-            Log.i(TAG, "Room details received: " + place.getName());
-*/
-            String url = "https://maps.googleapis.com/maps/api/geocode/json?";
+            String url = Constants.GOOGLEMAP_API_URL;
             String location = mAutocompleteView.getText().toString();
             try {
                 // encoding special characters like space in the user input place
@@ -263,7 +251,6 @@ public class SearchMapsActivity extends FragmentActivity implements GoogleApiCli
             String address = "address=" + location;
 
             String sensor = "sensor=false";
-
 
             // url , from where the geocoding data is fetched
             url = url + address + "&" + sensor;
@@ -332,21 +319,18 @@ public class SearchMapsActivity extends FragmentActivity implements GoogleApiCli
     /**
      * This is where we can add markers or lines, add listeners or move the camera. In this case, we
      * just add a marker near Africa.
-     * <p/>
      * This should only be called once and when we are sure that {@link #mMap} is not null.
      */
     private void setUpMap() {
 
-       // mMap.addMarker(new MarkerOptions().position(new LatLng(0, 0)).title("Marker"));
-        //mMap.setMyLocationEnabled(true);
+        // add four markers in map.
         mMap.setMyLocationEnabled(true);
 
-
-            mMap.setMyLocationEnabled(true);
-            mMap.addMarker(new MarkerOptions().position(new LatLng(38.8994781, -77.0486021)).title("Gelman Lib, click me"));
-            mMap.addMarker(new MarkerOptions().position(new LatLng(38.900144, -77.0495843)).title("SEH, click me"));
-            mMap.addMarker(new MarkerOptions().position(new LatLng(38.8989895, -77.0498478)).title("Tompkins, click me"));
-            mMap.addMarker(new MarkerOptions().position(new LatLng(38.9003921, -77.0482805)).title("Rome Hall, click me"));
+        mMap.setMyLocationEnabled(true);
+        mMap.addMarker(new MarkerOptions().position(new LatLng(38.8994781, -77.0486021)).title(Constants.LIBRARY));
+        mMap.addMarker(new MarkerOptions().position(new LatLng(38.900144, -77.0495843)).title(Constants.SEH));
+        mMap.addMarker(new MarkerOptions().position(new LatLng(38.8989895, -77.0498478)).title(Constants.Tompkins));
+        mMap.addMarker(new MarkerOptions().position(new LatLng(38.9003921, -77.0482805)).title(Constants.RomeHall));
 
     }
 
@@ -355,14 +339,7 @@ public class SearchMapsActivity extends FragmentActivity implements GoogleApiCli
         double latitude = location.getLatitude();
         double longitude = location.getLongitude();
         LatLng latLng = new LatLng(latitude, longitude);
-       // mMap.addMarker(new MarkerOptions().position(latLng));
-        /*
-        if(mAction.equals("Room")) {
-            mMap.addMarker(new MarkerOptions().position(latLng).title("You are here"));
-        }
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-        mMap.animateCamera(CameraUpdateFactory.zoomTo(15));
-        */
+
         mMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(38.8994781, -77.0486021)));
         mMap.animateCamera(CameraUpdateFactory.zoomTo(15));
     }
@@ -383,20 +360,8 @@ public class SearchMapsActivity extends FragmentActivity implements GoogleApiCli
         double currentLatitude = location.getLatitude();
         double currentLongitude = location.getLongitude();
         LatLng latLng = new LatLng(currentLatitude, currentLongitude);
-        /*
-        if(mAction.equals("Room")){
-            MarkerOptions options = new MarkerOptions()
-                    .position(latLng)
-                    .title("You are here!");
-            mMap.addMarker(options);
-        }
-        */
-//        MarkerOptions options = new MarkerOptions()
-//                .position(latLng)
-//                .title("I am here!");
-//        mMap.addMarker(options);
+
         mMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(38.8994781, -77.0486021)));
-       // mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
         mMap.animateCamera(CameraUpdateFactory.zoomTo(15), 1000,null);
 
     }
