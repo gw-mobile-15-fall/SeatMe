@@ -122,7 +122,6 @@ public class CheckRoomActivity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
                 mRooms = new ArrayList<Room>();
-                System.out.println("There are " + snapshot.getChildrenCount() + "  posts");
                 for (DataSnapshot postSnapshot : snapshot.getChildren()) {
                     long numOfChild = postSnapshot.getChildrenCount();
                     long i = 0;
@@ -134,7 +133,6 @@ public class CheckRoomActivity extends AppCompatActivity {
                         if (i < numOfChild)
                             continue;
                         Room room = postSnapshotChild.getValue(Room.class);
-                        System.out.println(room.getName());
                         mRooms.add(room);
                         break;
                     }

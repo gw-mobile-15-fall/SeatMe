@@ -6,7 +6,7 @@ package com.seatme.gwu.seatme;
 public class Constants {
     public static final String PARSE_APP_ID = "W2LKfIFXmtwauqBdrbAvX5H5Y8af573qGelZV9c1";
     public static final String PARSE_CLIENT_KEY = "bmT7et6EvAbkhCMnrxcFvfhoW5an1MxSxPQkXogv";
-    public static final String GOOGLE_API_KEY = "AIzaSyBrTk5OlTPRSmPyDzzlO1wXqSIWWYxfuDI";
+    public static final String GOOGLE_API_KEY = "AIzaSyBtPNHoG9hZuCrQyhCdp9tdWS8J8jKEL-4";
     public static final String ACTION = "ACTION";
     public static final String PLACE = "PLACE";
     public static final String ROOM = "ROOM";
